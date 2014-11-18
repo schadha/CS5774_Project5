@@ -1,0 +1,40 @@
+      <div class="col-md-3 me"> <!-- Populate the collaborators feed -->
+        <h3 style="text-align: left;">Collaborator Feed</h3>
+          <ul class="events">
+            <?php 
+            $collaborators = Collaborator::getCollaborators($_SESSION['username'], 1);
+            if(count($collaborators) == 0) { ?>
+              <h4> No Collaborators</h4>
+              <?php } 
+            foreach($collaborators as $c) {
+                $events = Event::getEvents('username', $c[1]);
+                foreach ($events as $e) { ?>
+              <div class="event">
+                    <?php renderEvent($e, $_SESSION['username']); ?>
+              </div>
+                <?php }
+            } ?>
+        </ul>
+      </div>    
+      <div class="col-md-9 main">
+          <div class="collabContent">
+            <?php if(count($collabs) == 0) { ?> <!-- No collaborators -->
+              <h4> Add a collaborator through the <a href="<?= SERVER_PATH.'community' ?>"> Community </a> page</h4>
+            <?php } ?>
+            <?php foreach($collabs as $collab) { ?> <!-- List collaborator and any requests for collaboration -->
+                <?php if ($collab[2] == 0 && strcmp($collab[5], $_SESSION['username']) != 0) { ?>
+                  <br><h4><a href="<?= SERVER_PATH.$collab[1] ?>"> <?= $collab[1] ?> </a> Request sent on: <?= date("M j, g:i a", strtotime($collab[3])) ?></h4>
+                  <button class="btn btn-success accept_request" value=<?= $collab[1] ?>>Accept Collaboration</button>
+                  <button class="btn btn-danger deny_request" value=<?= $collab[1] ?>>Deny Collaboration</button>
+                <?php } else if ($collab[2] == 0) { ?>
+                  <br><h4><a href="<?= SERVER_PATH.$collab[1] ?>"> <?= $collab[1] ?> </a> Request sent on: <?= date("M j, g:i a", strtotime($collab[3])) ?></h4>
+                  <button class="btn btn-danger deny_request" value=<?= $collab[1] ?>>Cancel Request</button>
+                <?php } else { ?>
+                  <br><h4><a href="<?= SERVER_PATH.$collab[1] ?>"> <?= $collab[1] ?> </a>  Collaborator since: <?= date("M j, g:i a", strtotime($collab[3])) ?></h4>
+                  <button class="btn btn-danger deny_request" value=<?= $collab[1] ?>>Uncollaborate</button>
+                <?php } ?>
+            <?php } ?>
+        </div>
+    </div>
+  </body>
+</html>

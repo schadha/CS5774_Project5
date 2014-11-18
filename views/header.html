@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><?= $pageName ?></title>
+
+  <!-- Bootstrap -->
+  <link href="<?=SERVER_PATH?>bootstrap/css/bootstrap.min.css" type="text/css"  rel="stylesheet">
+  <link href="<?=SERVER_PATH?>css/styles.css"  type="text/css" rel="stylesheet">
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="<?=SERVER_PATH?>jquery/jquery-1.11.1.min.js"></script>
+  <script src="<?=SERVER_PATH?>jquery/jquery-ui.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="<?=SERVER_PATH?>bootstrap/js/bootstrap.min.js"></script>
+  <script src="<?=SERVER_PATH?>javascript/functions.js" type="text/javascript"></script>
+</head>
+<body>
+
+
+  <?php if(!isset($_SESSION['username'])) { ?>
+  <!-- Log In Modal -->
+  <div class="modal fade" id="logInModal" tabindex="-1" role="dialog" aria-labelledby="logInLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="logInLabel">Log In</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form">
+            <div class="form-group">
+              <p class="error" id="logInError"></p>
+              <label for="username">Username</label>
+              <input type="text" class="form-control" id="username" placeholder="Enter Username">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" placeholder="Password">
+            </div>
+            <div class="form-group formButtons">
+              <button type="button" class="btn btn-success" name="login" id="login">Log In</button>
+<!--              <button type="button" class="btn btn-danger"  data-dismiss="modal" data-toggle="modal" data-target="#forgotModal">Forgot</button>-->
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Modal -->
+  <div class="modal fade" id="forgotModal" tabindex="-1" role="dialog" aria-labelledby="forgotLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="forgotLabel">Forgot</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form">
+            <div class="form-group">
+              <p class="error" id="forgotPasswordError"></p>
+              <label for="email_pass">Email</label>
+              <input type="text" class="form-control" id="email_pass" placeholder="Enter email">
+            </div>
+            <div class="form-group formButtons">
+              <button type="button" id="email_pw" class="btn btn-success">Send Information to Email</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Modal -->
+  <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="createLabel">Create New Account</h4>
+        </div>
+        <div class="modal-body">
+          <form name="form">
+            <div class="form-group">
+              <p class="error" id="createAccountError"></p>
+              <label for="firstname">First Name</label>
+              <input type="text" class="form-control firstname" id="firstname" placeholder="Enter First Name">
+            </div>
+            <div class="form-group">
+              <label for="lastname">Last Name</label>
+              <input type="text" class="form-control lastname" id="lastname" placeholder="Enter Last Name">
+            </div>
+            <div class="form-group">
+              <label for="email">Email address</label>
+              <input type="email" class="form-control email" id="email" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+              <label for="user">Username</label>
+              <input type="text" class="form-control user" id="user" placeholder="Enter Username">
+            </div>
+            <div class="form-group">
+              <label for="user_password">Password</label>
+              <input type="password" class="form-control user_password" id="user_password" placeholder="Enter Password">
+            </div>
+            <div class="form-group">
+              <label for="verifypassword">Re-enter Password</label>
+              <input type="password" class="form-control verifypassword" id="verifypassword" placeholder="Enter Password">
+            </div>
+            <div class="form-group">
+              <label for="genre">Favorite Genre</label>
+                <select class="form-control" id="favoriteGenre">
+                    <option>Select a genre...</option>
+                    <option>Rap</option>
+                    <option>Pop</option>
+                    <option>Electronic</option>
+                    <option>Rock</option>
+                    <option>Country</option>
+                </select>
+            </div>
+            <div class="form-group">
+              <label for="special">Admin/Moderator Code</label>
+              <input type="text" class="form-control" id="mod_code" placeholder="Enter code if given one">
+            </div>
+            <div class="form-group formButtons">
+              <button type="button" class="btn btn-success createAccount" name="createaccount" id="createaccount">Create Account</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <?php } ?>
+
+  <!-- Nav bar setup is different on home page versus all of the other pages -->
+  <?php if(substr($_SERVER["REQUEST_URI"], -1) !== "/") {?>
+  <!-- Navbar -->
+  <nav class="navbar navbar-inverse" role="navigation">
+    <div class="navbar-header">
+
+      <?php } else { ?>
+      <div class="navbar-wrapper">
+        <div class="container-fluid">
+          <div class="navbar navbar-inverse navbar-static-top">
+            <div class="navbar-header">
+              <?php } ?>
+
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#form_content">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+              <!-- Buttons/tab links when logged in are different than logged out -->
+              <?php if(isset($_SESSION['username'])) { ?>
+
+              <a class="navbar-brand" href="<?=SERVER_PATH?>community">CollabTunes</a>
+            </div>
+            <div class="collapse navbar-collapse" id="form_content" ng-controller="HeaderController">
+              <ul class="nav navbar-nav">
+                <li <?=echoActiveClassIfRequestMatches("community")?>><a href="<?=SERVER_PATH?>community">Community</a></li>
+                <li <?=echoActiveClassIfRequestMatches($_SESSION['username'])?>><a href="<?=SERVER_PATH.$_SESSION['username']?>">My Music</a></li>
+                <li <?=echoActiveClassIfRequestMatches("collabs")?>><a href="<?=SERVER_PATH?>collabs">Collaborators</a></li>
+              </ul>
+              <!-- Log out functionality -->
+              <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    
+                  <a class="btn btn-success" href="<?=SERVER_PATH?>logoff">Log Off</a>
+                    
+                </div>    
+              </form>
+
+              <?php } else { ?>
+
+              <a class="navbar-brand" href="<?=SERVER_PATH?>">CollabTunes</a>
+            </div>
+            <div class="navbar-collapse collapse" id="form_content">
+              <ul class="nav navbar-nav">
+                <li><a href="<?=SERVER_PATH ?>community">Community</a></li>
+              </ul>
+              <!-- Log in and Create functionality -->
+              <form class="navbar-form navbar-right">
+                <div class="form-group">
+                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#logInModal">Log In</button>
+                </div>    
+                <div class="form-group">
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">Create Account</button>
+                </div>
+              </form>
+
+              <?php } ?>
+
+              <!-- Search Bar Button -->
+<!--
+              <form class="navbar-form navbar-right" role="search">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
+                  <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                  </div>
+                </div>
+              </form>
+-->
+
+              <?php if(substr($_SERVER["REQUEST_URI"], -1) !== "/") { ?>
+            </div>
+          </nav>
+
+          <!-- Success message alert boxes. Different setup for home page and other pages. -->
+          <?php if($successMessage !== '') {?>
+          <div class="alert alert-success fade in" id="alert2" role="alert"><p class="success" data-dismiss="alert"><strong>Success!</strong> <?= $successMessage ?></p></div>
+          <?php }?>
+
+          <?php } else { ?>
+        </div>
+      </div>
+    </div>
+  </div>
+  <?php if($successMessage !== '') {?>
+  <div class="alert alert-success fade in" role="alert"><p class="success" data-dismiss="alert"><strong>Success!</strong> <?= $successMessage ?></p></div>
+  <?php }?>
+
+  <?php } ?>

@@ -1,0 +1,234 @@
+<!--Delete Album Modal -->
+<div class="modal fade" id="deleteAlbumModal" tabindex="-1" role="dialog" aria-labelledby="deleteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="deleteLabel">Are you sure you want to delete the album "<?=$curAlbum["album_name"]?>"?</h4>
+            </div>
+            <div class="modal-body">
+                <form name="albumForm">
+                    <p class="error" id="albumDeleteError"></p>
+                    <div class="form-group formButtons">
+                        <button type="button" class="btn btn-danger" name="deletealbumbutton" id="deletealbumbutton">Delete Album</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Delete Track Modal -->
+<div class="modal fade" id="deleteTrackModal" tabindex="-1" role="dialog" aria-labelledby="deleteTrackLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="deleteTrackLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <form name="albumForm">
+                    <p class="error" id="trackDeleteError"></p>
+                    <div class="form-group formButtons">
+                        <button type="button" class="btn btn-danger" name="deletetrackbutton" id="deletetrackbutton">Delete Track</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Album Modal -->
+<div class="modal fade" id="editAlbumModal" tabindex="-1" role="dialog" aria-labelledby="editLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="editLabel">Edit Album - <?=$curAlbum["album_name"]?></h4>
+            </div>
+            <div class="modal-body">
+                <form name="albumFormEdit" id="albumFormEdit">
+                    <div class="form-group">
+                        <p class="error" id="albumEditError"></p>
+                        <label for="album_name">Album Name</label>
+                        <input type="text" class="form-control" id="edit_album_name" name="album_name" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="album_image">Album Image</label>
+                        <input type="file" class="form-control" id="album_image" name="album_image">
+                    </div>
+                    <div class="form-group">
+                        <label for="album_genre">Album Genre</label>
+                        <input type="text" class="form-control" id="edit_album_genre" name="album_genre" placeholder="Enter Album Genre">
+                    </div>
+                    <div class="form-group">
+                        <label for="album_summary">Album Summary</label>
+                        <textarea class="form-control" id="edit_album_summary" name="album_summary" placeholder="Enter Summary"></textarea>
+                    </div>
+                    <div class="form-group formButtons">
+                        <button type="button" class="btn btn-success" name="editalbumbutton" id="editalbumbutton">Edit Album</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Track Modal -->
+<div class="modal fade" id="editTrackModal" tabindex="-1" role="dialog" aria-labelledby="editLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="editLabel">Edit Track</h4>
+            </div>
+            <div class="modal-body">
+                <form name="albumForm">
+                    <div class="form-group">
+                        <p class="error" id="trackEditError"></p>
+                        <label for="old_track">Current Track Name</label>
+                        <input type="text" class="form-control" id="old_track" name="old_track" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="old_track">New Track Name</label>
+                        <input type="text" class="form-control" id="new_track" name="new_track">
+                    </div>
+                    <div class="form-group formButtons">
+                        <button type="button" class="btn btn-success" name="track_edit_submit" id="track_edit_submit">Edit Track</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Track Modal -->
+<div class="modal fade" id="trackModal" tabindex="-1" role="dialog" aria-labelledby="editLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="editLabel">Create Track</h4>
+            </div>
+            <div class="modal-body">
+                <form name="trackForm" id="trackForm" enctype="multipart/form-data" method="POST" action="../track/create">
+                    <div class="form-group">
+                        <p class="error" id="trackCreateError"></p>
+                        <label for="track_name">Track Name</label>
+                        <input type="text" class="form-control" id="track_name" name="track_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="track_album">Album Name</label>
+                        <input type="text" class="form-control" id="track_album" name="track_album" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="album_owner">Album Owner</label>
+                        <input type="text" class="form-control" id="album_owner" name="album_owner" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="track_data">Track File (.mp3)</label>
+                        <input type="file" class="form-control" id="track_data" name="track_data" placeholder="Track File">
+                    </div>
+                    <div class="form-group formButtons">
+                        <button type="submit" class="btn btn-success" name="createtrack" id="createtrack">Create Track</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PHP To embed album and track information for the user -->
+<div class="col-md-4 main">
+
+    <h1 class="album_title"><?=$curAlbum["album_name"]?></h1>
+    <h1 class="artist">by<a href="<?=SERVER_PATH.$curAlbum['album_owner']?>"> <?=$curAlbum["album_owner"]?> </a></h1>
+    <div id="albumCoverDiv">
+        <img src="<?=$curAlbum["album_image"]?>" class="img-rounded" id="albumCover">
+    </div>
+
+    <div class="albumInfo">
+        <h4 class="featured_label album_label">Genre: <?= $curAlbum['album_genre'] ?></h4>
+        <h4 class="featured_label album_label">Summary: <?= $curAlbum['album_summary'] ?></h4>
+
+        <!-- If the logged in user is looking at his own album or is a moderator/admin, he should be able to modify it -->
+        <?php if($_SESSION['username'] == $curAlbum["album_owner"] || User::isSpecial($_SESSION['username']) > 0) { ?>
+        <div class="form-group formButtons">
+            <button type="button" class="btn btn-success album" data-toggle="modal" data-target="#editAlbumModal" id="editAlbum">Edit Album </button>
+            <button type="button" class="btn btn-danger album" data-toggle="modal" data-target="#deleteAlbumModal"id="deleteAlbum">Delete Album </button>
+        </div>
+        <?php } ?>
+    </div>
+
+</div>
+
+<div class="col-md-4 main">
+    <!-- Only show if there are tracks -->
+    <?php if(!is_null($tracks)){ ?>
+    <!-- Javascript for audio player and playlist functionality. Not in header because only needed for this page. -->
+    <script src="<?=SERVER_PATH?>audiojs/audiojs/audio.min.js"></script>
+    <script src="<?=SERVER_PATH?>javascript/audioSetup.js"></script>
+
+    <div id="wrapper">
+        <audio preload="none"></audio>
+        <ol class="playlist">
+            <?php
+foreach($tracks as $a) {
+$name = $a['track_name'];
+$path = $a['track_path'];
+$owner = $a['track_owner'];
+?>
+            <li><a href="#" data-src=<?= $path ?>><?= $name ?></a></li>
+    <?php } ?> <!-- foreach -->
+    <?php } ?>
+    </ol>
+<!-- Tracks editable if logged in user is owner of this album -->
+<?php if($_SESSION['username'] == $curAlbum["album_owner"]) { ?>
+<div class="form-group formButtons trackButtons">
+    <button type="button" id="trackModalButton" class="btn btn-success" data-toggle="modal" data-target="#trackModal">Add Track</button>
+    <button type="button" class="btn btn-success edittrack" data-toggle="modal" data-target="#editTrackModal">Edit Track</button>
+    <button type="button" class="btn btn-danger deletetrack" data-toggle="modal" data-target="#deleteTrackModal">Delete Track</button>
+
+</div> <!-- Add a track if users are collaborating with eachother -->
+<?php } else if (Collaborator::isCollaborator($_SESSION['username'], $curAlbum['album_owner'])['status'] == 1) { ?> <!-- is_null-->
+<div class="form-group formButtons">
+    <button type="button" id="trackModalButton" class="btn btn-success" data-toggle="modal" data-target="#trackModal">Add Track</button>
+</div> <!-- Download track available to all -->
+<?php } if (sizeof($tracks) > 0) { ?>
+<div class="form-group formButtons">
+    <button type="button" class="btn btn-primary downloadtrack">Download Track</button>
+</div>
+<?php } ?>
+
+</div>
+
+</div>
+
+<div class="col-md-4 main">
+    <div class="comments">
+        <?php if(count($comments) == 0) { ?>
+        <p> No Comments</p> <br/><br/>
+        <?php } 
+$i = 0;
+foreach($comments as $comment) {
+$commenter = $comment['username'];
+$text = $comment['text'];
+$created = $comment['created'];
+$owner = $comment['album_owner'];
+$comment_id = $comment['id'];
+$id = "comment_" . $i . "_" . $comment_id . "_" . $commenter;
+?>
+        <!-- Comment owner, album owner, moderator and admin are the only ones who can delete a comment -->
+        <?php if ($commenter == $_SESSION['username'] || $_SESSION['username'] == $owner || User::isSpecial($_SESSION['username']) > 0) { ?>
+        <button class="btn-xs btn-danger delete_comment" value="<?= $id ?>">X</button>
+        <?php } ?>
+        <p class="comment" id="<?= $id ?>"><?= "<a href=".SERVER_PATH.$commenter.">".$commenter."</a>" ?> said: <?= $text ?> on <?= date("M j, g:i a", strtotime($created)) ?></p>
+        <?php $i++; } ?>
+    </div>
+    <textarea id="comment_area"></textarea>
+    <div class="form-group">
+        <button type="button" class="btn btn-success" id="comment">Comment</button>
+    </div>
+</div>
+</body>
+</html>

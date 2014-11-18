@@ -1,0 +1,197 @@
+    <div class="container-fluid">
+      <div class="col-md-3 me">
+        <?php if ($curUser['user_type'] == 1) { ?>
+        <h1 style="text-align: left;"><?=$user." (Moderator)"?></h1>
+        <?php } else if ($curUser['user_type'] == 2) { ?>
+        <h1 style="text-align: left;"><?=$user." (Admin)"?></h1>
+        <?php } else { ?>
+        <h1 style="text-align: left;"><?=$user?></h1>
+        <?php } ?>
+        <!-- Only able to edit profile if logged in user is on his/her own page. -->
+        <?php if($_SESSION['username'] == $user) { ?>
+        <button type="button" class="btn btn-success profile" data-toggle="modal" data-target="#editModal">Edit Profile</button>
+        <?php } else if (strcmp($displayButton, "add") == 0) { ?> <!-- Add user as a collaborator -->
+        <button type="button" class="btn btn-success" id="collaborate">Add As Collaborator</button>
+        <?php } else if (strcmp($displayButton, "sent") == 0) { ?> <!-- Cancel a set collaboartion request -->
+        <button type="button" class="btn btn-danger" id="uncollaborate">Cancel Collab Request</button>
+        <?php } else if (strcmp($displayButton, "waiting") == 0) { ?> <!-- Accept a collaboration request -->
+        <button type="button" class="btn btn-success" id="accept" >Accept Request</button>
+        <?php } else { ?> <!-- Uncolaborate with a user -->
+        <button type="button" class="btn btn-danger" id="uncollaborate">Uncollaborate</button>
+        <?php } ?>
+        <?php if ($_SESSION['username'] != $user && User::isSpecial($_SESSION['username']) == 2) { ?> <!-- Not the logged in user's profile and is an admin -->
+            <?php if ($curUser['user_type'] == 0) { ?> <!-- If the user is regular, show moderator promotion -->
+                <button type="button" class="btn btn-success" id="admin_promote" value=<?= $user ?>>Promote to Moderator</button>
+            <?php } else if ($curUser['user_type'] == 1) { ?> <!-- If the user is a moderator, show moderator demotion -->
+                <button type="button" class="btn btn-danger" id="admin_demote" value=<?= $user ?>>Demote to Normal User</button>
+            <?php } ?>
+            <?php if ($curUser['user_type'] != 2) { ?> <!-- Only admin can delete a user's account -->
+                <button type="button" class="btn btn-danger" id="admindeleteaccount" value=<?= $user ?>>Delete Account</button>
+            <?php } ?>
+        <?php } ?>
+        <h3 class="prof"><?= $curUser['first_name']." ".$curUser['last_name']. " - ". $curUser['favorite_genre'] ?></h3>
+
+        <!-- Show events feed for that user -->
+        <ul class="events">
+          <?php 
+          $events = Event::getEvents('username', $curUser['username']);
+          foreach($events as $e) { ?>
+            <div class="event">
+            <?php renderEvent($e, $_SESSION['username']); ?>
+            </div>
+            <?php } ?>
+        </ul>
+      </div>
+
+      <!-- Edit Modal -->
+      <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="editModal">Edit Account</h4>
+            </div>
+            <div class="modal-body">
+              <form name="updateForm" id="updateForm" method="POST" action="<?= SERVER_PATH ?>updateUser">
+                <div class="form-group">
+                  <p class="error" id="editProfileError"></p>
+                  <label for="firstname">First Name</label>
+                  <input type="text" class="form-control firstname" id="firstname" name="first_name">
+                </div>
+                <div class="form-group">
+                  <label for="lastname">Last Name</label>
+                  <input type="text" class="form-control lastname" id="lastname" name="last_name">
+                </div>
+                <div class="form-group">
+                  <label for="email">Email address</label>
+                  <input type="email" class="form-control email" id="email" name="email">
+                </div>
+                <div class="form-group">
+                  <label for="user">Username</label>
+                  <input type="text" class="form-control user" id="user" name="username" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="user_password">Password</label>
+                  <input type="password" class="form-control user_password" id="user_password" name="password">
+                </div>
+                <div class="form-group">
+                  <label for="verify_password">Re-Enter Password</label>
+                  <input type="password" class="form-control user_password" id="verify_password" name="verify_password">
+                </div>
+                <div class="form-group">
+                  <label for="genre">Favorite Genre</label>
+                  <select class="form-control" id="favoriteGenre">
+                    <option>Select a genre...</option>
+                    <option>Rap</option>
+                    <option>Pop</option>
+                    <option>Electronic</option>
+                    <option>Rock</option>
+                    <option>Country</option>
+                  </select>
+                </div>
+                <div class="form-group formButtons">
+                  <button class="btn btn-success" name="updateaccount" id="updateaccount">Update Account</button>
+                  <button class="btn btn-danger" name="deleteaccount" id="deleteaccount" data-dismiss="modal" data-toggle="modal" data-target="#deleteAccountModal">Delete Account</button>
+                  <button class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!--Delete Account Modal -->
+      <div class="modal fade" id="deleteAccountModal" tabindex="-1" role="dialog" aria-labelledby="deleteAccountLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="deleteAccountLabel">Are you sure you want to delete your account "<?=$user?>"?</h4>
+            </div>
+            <div class="modal-body">
+              <form name="albumForm">
+                <p class="error" id="accountDeleteError"></p>
+                <div class="form-group formButtons">
+                  <button type="button" class="btn btn-danger" name="deleteaccountbutton" id="deleteaccountbutton" value=<?= $user ?>>Delete Account</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Album Modal -->
+      <div class="modal fade" id="albumModal" tabindex="-1" role="dialog" aria-labelledby="createLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="createLabel">Create New Album</h4>
+            </div>
+            <div class="modal-body">
+              <form name="albumForm" id="albumForm">
+                <div class="form-group">
+                  <p class="error" id="createAlbumError"></p>
+                  <label for="album_name">Album Name</label>
+                  <input type="text" class="form-control" id="album_name" name="album_name" placeholder="Enter Album Name">
+                </div>
+                <div class="form-group">
+                  <label for="album_image">Album Image</label>
+                  <input type="file" class="form-control" id="album_image" name="album_image" placeholder="Enter Album Image">
+                </div>
+                <div class="form-group">
+                  <label for="album_genre">Album Genre</label>
+                  <input type="text" class="form-control" id="album_genre" name="album_genre" placeholder="Enter Album Genre">
+                </div>
+                <div class="form-group">
+                  <label for="album_summary">Album Summary</label>
+                  <textarea class="form-control" id="album_summary" name="album_summary" placeholder="Enter Summary"></textarea>
+                </div>
+                <div class="form-group formButtons">
+                  <button type="button" class="btn btn-success" name="createalbum" id="createalbum">Create Album</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Populates rows with albums associated with this user -->
+      <div class="col-md-9 main">
+        <h1 class="page-header">My Music</h1>
+
+        <div class="row placeholders">
+          <!-- Display all albums for this user -->
+          <?php if(!is_null($albums)){ ?>
+
+          <?php
+          foreach($albums as $a) {
+            $title = $a['album_name'];
+            $owner = $a['album_owner'];
+            $genre = $a['album_genre'];
+            $summary = $a['album_summary'];
+            $image = substr($a['album_image'], 1);
+            ?>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <a href="<?=SERVER_PATH.$owner."/".$title?>"><img src="<?=$image?>" class="img-rounded" id="albumImage"></a>
+              <h4 class="featured_label"><?= $title ?></h4>
+            </div>
+            <?php } ?>
+
+            <?php } ?>
+
+            <!-- Ability to add albums only available to logged in user on his own page -->
+            <?php if($_SESSION['username'] == $user) { ?>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <a data-toggle="modal" data-target="#albumModal">
+                <img src="<?=SERVER_PATH?>images/plus.jpg" title="Create New Album" id="new_album" class="img-rounded">
+              </a>
+            </div>
+            <?php } ?>
+
+          </div>
+        </div>
+
+      </div>
+    </body>
+    </html>

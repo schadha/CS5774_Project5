@@ -1,0 +1,384 @@
+body {
+    background-color: #bdc3c7;
+}
+
+p.error {
+	font-size: 16px;
+    color: #f00;
+    font-weight: bold;
+}
+
+.alert {
+	margin-top: 63px;
+	margin-bottom: 0px;
+}
+
+#alert2 {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.navbar {
+	padding: 5px;
+	margin-bottom: 0px;
+}
+
+.navbar-inverse .navbar-brand {
+	color: #777;
+	font-size: 30px;
+}
+
+.navbar-nav>li {
+	float: left;
+	margin-top: 2px;
+	margin-left: 5px;
+	font-size: 20px;
+}
+
+/* Special class on .container surrounding .navbar, used for positioning it into place. */
+.navbar-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.container-fluid {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.carousel-caption {
+	height: 60%;
+}
+
+input.form-control.search{
+	display: inline-block;
+	width: auto;
+	vertical-align: middle;
+}
+
+.navbar-form .form-group {
+	display: inline-block;
+	margin-bottom: 0;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+
+div.form-group.formButtons {
+	text-align: center;
+}
+
+div.form-group.formButtons button[type='button'] {
+	margin: 5px;
+}
+
+.container .content {
+	background-color: white;
+}
+
+.page-title {
+	text-align: center;
+	color: white;
+	font-size: 35px;
+}
+
+html,body{height:100%;}
+.carousel,.item,.active{height:100%;}
+.carousel-inner{height:100%;}
+.fill{width:100%;height:100%;background-position:center;background-size:cover;}
+
+/* faster sliding speed */
+.carousel-inner > .item {
+    -webkit-transition: 0.3s ease-in-out left;
+    -moz-transition: 0.3s ease-in-out left;
+    -o-transition: 0.3s ease-in-out left;
+    transition: 0.3s ease-in-out left;
+}
+
+.carousel-title {
+	font-size: 65px;
+	font-family: "Sans-serif", "Serif", "Times New Roman";
+}
+
+.first {
+	margin-top: -85px;
+	padding-left: 0px;
+	margin-left: 450px;
+}
+
+.second {
+	height: 80%;
+	margin-left: 250px;
+}
+
+.carouseltext {
+	font-size: 55px;
+}
+
+/* keep full widget on smaller screens */
+@media (max-width: 767px) { 
+	body {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+#myinfo {
+	/*float:left;*/
+	overflow: hidden;
+}
+
+#collab {
+	float: right;
+}
+
+.collabContent {
+/*    display: inline;*/
+}
+
+h1 {
+	text-align: center;
+	font-size: 65px;
+	color: white;
+	font-family: sans-serif;
+}
+
+
+#albumImage, #new_album, #albumImageDiv {
+	height: 250px;
+	width: 250px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.featured_label {
+	text-align: left;
+	color: white;
+	font-size: 25px;
+}
+
+.album_label {
+	text-align: center;
+}
+
+.placeholders {
+	margin-top: 40px;
+	padding-bottom: 20px;
+    height:67vh;
+/*    width:100%;*/
+    overflow-y:scroll;
+}
+
+.temp_log_off {
+	text-decoration:none; 
+	color : #FFF;
+}
+
+.whiteout {
+	color: white;
+	font-size: 20px
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+
+h3 {
+	color: white;
+}
+
+.playback {
+	width: 100%;
+	border: 1px solid black;
+}
+
+.music {
+	padding: 20px;
+}
+
+/*  SECTIONS  */
+.section {
+	clear: both;
+	padding: 0px;
+	margin: 0px;
+}
+
+/*  COLUMN SETUP  */
+.col {
+	display: block;
+	float:left;
+	margin: 1% 0 1% 1.6%;
+}
+
+.sidepanel {
+	background-color: gray;
+}
+.col:first-child { margin-left: 0; }
+
+
+/*  GROUPING  */
+.group:before,
+.group:after {
+	content:"";
+	display:table;
+}
+.group:after {
+	clear:both;
+}                                           
+					
+/*  GRID OF TWO  */
+.span_2_of_2 {
+	width: 100%;
+}
+.span_1_of_2 {
+	width: 75%;
+}
+
+/*  GO FULL WIDTH AT LESS THAN 480 PIXELS */
+
+@media only screen and (max-width: 480px) {
+	.col { 
+		margin: 1% 0 1% 0%;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.span_2_of_2 {
+		width: 100%; 
+	}
+	.span_1_of_2 {
+		width: 100%;
+	}
+}
+
+/*  GO FULL WIDTH AT LESS THAN 480 PIXELS */
+
+@media only screen and (max-width: 480px) {
+	.col { 
+		margin: 1% 0 1% 0%;
+	}
+}
+
+@media only screen and (max-width: 480px) {
+	.span_3_of_3 {
+		width: 100%; 
+	}
+	.span_2_of_3 {
+		width: 100%; 
+	}
+	.span_1_of_3 {
+		width: 100%;
+	}
+}
+
+.prof {
+	padding-top: 10px;
+}
+
+/*Set the audio player styles*/
+ol.playlist { padding: 0px; margin: 0px; list-style: decimal-leading-zero inside; color: black; width: 460px; border-top: 1px solid #FFF; font-size: 0.9em; }
+ol li { position: relative; margin: 0px; padding: 9px 2px 10px; border-bottom: 1px solid #FFF; cursor: pointer; }
+ol li a { display: block; text-indent: -3.3ex; padding: 0px 0px 0px 20px; color: black;}
+ol li a:hover { display: block; text-indent: -3.3ex; padding: 0px 0px 0px 20px; color: black;}
+li.playing a { color: black; }
+li.playing:before { content: "\266B"; width: 14px; height: 14px; padding: 3px; line-height: 14px; margin: 0px; position: absolute; left: -24px; top: 9px; color: black; font-size: 13px; text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2); }
+
+.audiojs { margin: 20px 0px 20px; }
+#wrapper { width: 460px; margin: 10px auto 10px; }
+
+a { color: #b42727; text-decoration: none; }
+a:hover { color: #7b0000; text-decoration:none;}
+
+div.play-pause p { margin-left: -6px; }
+
+/*Activity feed column*/
+.me {
+    background-color: #909496;
+    height: 92vh;
+}
+
+/*Events related styling*/
+.events {
+    padding-left: 0px;
+    font-size: 1.3em;
+    height:50vh;
+    width:100%;
+    overflow-y:scroll;
+}
+
+.event {
+    background-color: white;
+    margin-right: 7px;
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 15px;
+}
+
+/*Album page related styling*/
+.album_title {
+    text-align: center;
+}
+
+.artist {
+    text-align: center;
+}
+
+#albumCover, #albumCoverDiv {
+	height: 300px;
+	width: 300px;
+	margin: 0 auto;
+}
+
+.albumInfo {
+    text-align: center;
+}
+
+.trackButtons {
+    margin-top: 20px;
+}
+
+/*Comment related styling*/
+.delete_comment {
+    display: inline;
+    float: left;
+    font-size: 10px;
+    border-radius: 10px;
+}
+
+#comment_area {
+	width:100%;
+    margin-top: 10px;
+    border-radius: 10px;
+    resize: none;
+}
+
+.comments {
+	font-size: 20px;
+    height:70vh;
+    width:100%;
+    overflow-y:scroll;
+    margin-top: 20px;
+    padding-top: 5px;
+}
+
+.comment {
+    background-color: white;
+    margin-right: 7px;
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 15px;
+}

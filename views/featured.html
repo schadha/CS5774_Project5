@@ -1,0 +1,50 @@
+    <div class="container-fluid">
+      <div class="col-md-12 main">
+        <h1 class="page-header">Community</h1>
+
+        <!-- Populates the genres dropdown menu. -->
+        <?php if(!is_null($genres)){ ?>
+        <div class="genre_pick">
+          <select id="genre_select">
+          <option id="select">Select Genre</option>
+          <?php
+              foreach($genres as $g) {
+                  $genre = $g;
+          ?>
+              <option id="<?=$genre?>"><?=$genre?></option>
+          <?php } ?>
+
+          </select>
+          </div>
+
+        <?php } ?>
+
+        
+        <!-- Populates the rows with each album from the database -->
+        <div class="row placeholders">
+
+        <?php if(!is_null($albums)){ ?>
+
+          <?php
+              foreach($albums as $a) {
+                  $title = $a['album_name'];
+                  $owner = $a['album_owner'];
+                  $genre = $a['album_genre'];
+                  $summary = $a['album_summary'];
+                  $image = SERVER_PATH.substr($a['album_image'], 2);
+          ?>
+          <div class="col-xs-6 col-sm-3 placeholder">
+            <img src="<?=$image?>" class="img-rounded" id="albumImage"></a>
+            <h4 class="featured_label"><?= $title ?></h4>
+            <p class="whiteout">By: <?= $owner ?></p>
+          </div>
+          <?php } ?>
+
+        <?php } ?>
+
+      </div>
+
+      </div>
+    </div>
+  </body>
+</html>
