@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+
+  "name": "Link sharer",
+  "description": "This extension lets users of My Social Network share a link with one click.",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_icon": "link_icon.png",
+    "default_popup": "popup.html"
+  },
+    
+  "background": {
+      "scripts": ["background.js"]
+  },
+    
+  "permissions": [
+    "http://localhost/cs5774/testapp/",
+    "storage",
+      "tabs"
+  ]
+}

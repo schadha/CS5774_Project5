@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Link Sharer Popup</title>
+    <style>
+      body {
+        min-width: 400px;
+        overflow-x: hidden;
+      }
+        
+        #loggedInUsername {
+            font-weight: bold;    
+        }
+        
+        label {
+            display: block;   
+        }
+        
+        textarea {
+            display: block;
+            width: 300px;
+            height: 60px;
+        }
+        
+        #errorMessage {
+            font-weight: bold;
+            color: red;
+        }
+        
+        div.panel {
+            display: none;   
+        }
+        
+    </style>
+    <script src="jquery.min.js"></script>
+    <script src="popup.js"></script>
+  </head>
+  <body>
+
+      
+    <div id="loginPanel" class="panel">
+      
+      <h1>Log in</h1>
+      
+      <p>Please log in to My Social Network.</p>
+      
+      <form>
+        <label>Username: <input id="txtUsername" type="text" name="username" /></label><br />
+        <label>Password: <input id="txtPassword" type="password" name="password" /></label><br />
+        <button id="btnLogIn">Log in</button>
+      </form>
+        
+    </div>
+      
+    <div id="sharePanel" class="panel">
+      
+      <h1>Share this link</h1>
+        
+        <p>You will share this link as <span id="loggedInUsername"></span>.</p>
+        
+        <form>
+            <textarea id="txtMessage" name="message"></textarea>
+            <input type="hidden" id="apiKey" name="apiKey" value="" />
+            <button id="btnShare">Share</button> <button id="btnLogOut">Log out</button>
+        </form>
+    </div>
+      
+    <p id="errorMessage"></p>
+      
+  </body>
+</html>
+
