@@ -17,6 +17,38 @@ $(document).ready(function(){
           }
     });
     
+    $("#login").click(function () {
+		var username = $("#username").val();
+		var password = $("#password").val();
+        
+		if (!$("#username") || username.length == 0) {
+			$("#logInError").text("Please enter username!");
+			return;
+		}
+
+		if (!$("#password") || password.length == 0) {
+			$("#logInError").text("Please enter password!");
+			return;
+		}
+
+		var loginInfo = {
+			"username": username,
+			"password": password
+		};
+
+		$.post("http://localhost/CS5774/Project5/processLogin", loginInfo, function (data) {
+			if (data) {
+				$("#logInError").text(data);
+			} else {
+//				window.location.href = './community';
+                resetLoginPanel(); // reset the login panel
+                $('#loginPanel').hide(); // hide the login panel
+                $('#sharePanel').show(); // show the share panel
+                requestCurrentTabURL();
+			}
+		});
+	});
+    
     
     // make the initial request for an API key
     chrome.extension.sendRequest({

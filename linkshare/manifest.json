@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "Link sharer",
-  "description": "This extension lets users of My Social Network share a link with one click.",
+  "name": "Track Uploader",
+  "description": "This extension lets users of CollabTunes add an mp3 track with one click.",
   "version": "1.0",
 
   "browser_action": {
@@ -15,7 +15,7 @@
   },
     
   "permissions": [
-    "http://localhost/cs5774/testapp/",
+    "http://localhost/CS5774/Project5/",
     "storage",
       "tabs"
   ]
