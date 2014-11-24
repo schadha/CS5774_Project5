@@ -22,7 +22,7 @@
             height: 60px;
         }
         
-        #errorMessage {
+        .error {
             font-weight: bold;
             color: red;
         }
@@ -46,7 +46,7 @@
       
         <form role="form">
             <div class="form-group">
-              <p class="error" id="logInError"></p>
+<!--              <p class="error" id="logInError"></p>-->
               <label for="username">Username</label>
               <input type="text" class="form-control" id="username" placeholder="Enter Username">
             </div>
@@ -68,12 +68,11 @@
         
         <form>
             <textarea id="txtMessage" name="message"></textarea>
-            <input type="hidden" id="apiKey" name="apiKey" value="" />
             <button id="btnShare">Share</button> <button id="btnLogOut">Log out</button>
         </form>
     </div>
       
-    <p id="errorMessage"></p>
+    <p class="error" id="errorMessage"></p>
       
   </body>
 </html>

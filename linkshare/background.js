@@ -8,17 +8,15 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
                'url': tabURL 
             });
         });
-  } else if (request.action == 'getAPIKey') {
-      chrome.storage.local.get(['apiKey', 'username'], function(items) {
+  } else if (request.action == 'getUsername') {
+      chrome.storage.local.get(['username'], function(items) {
              chrome.extension.sendRequest({
-                'apiKey': items.apiKey,
                  'username': items.username
              });
       });
       
-  } else if (request.action == 'setAPIKey') {
+  } else if (request.action == 'setUsername') {
       chrome.storage.local.set({
-          'apiKey': request.apiKey,
           'username': request.username },
         function(){}
         );
