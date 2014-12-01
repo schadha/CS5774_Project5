@@ -52,42 +52,42 @@ $(document).ready(function() {
 			lName.length == 0 || email.length == 0 || uName.length == 0 ||
 			pWord.length == 0 || vWord.length == 0 || favoriteGenre == "Select a genre...") {
 			
-            $("#createAccountError").text("Please fill out the entire form");
-		    return;
-	   }
+	            $("#createAccountError").text("Please fill out the entire form");
+			    return;
+		   }
 
-	if (uName == "community") {
-		$("#createAccountError").text("Can't have an account with that username!");
-		return;
-	}
-
-	var accountInfo = {
-		"firstname": fName,
-		"lastname": lName,
-		"email": email,
-		"username": uName,
-		"password1": pWord,
-		"password2": vWord,
-		"user_type": 0,
-        "favorite_genre": favoriteGenre
-	};
-
-	if (modCode.length != 0 && modCode !== 'test') {
-		$("#createAccountError").text("Invalid Moderator code");
-		return;
-	} else if (modCode == 'test') {
-		accountInfo['user_type'] = 1;
-	}
-
-	$.post("./processRegistration", accountInfo, function (data) {
-		if (data) {
-			$("#createAccountError").text(data);
-		} else {
-			$("#createModal").modal('hide');
-			window.location.href = './';
+		if (uName == "community") {
+			$("#createAccountError").text("Can't have an account with that username!");
+			return;
 		}
+
+		var accountInfo = {
+			"firstname": fName,
+			"lastname": lName,
+			"email": email,
+			"username": uName,
+			"password1": pWord,
+			"password2": vWord,
+			"user_type": 0,
+	        "favorite_genre": favoriteGenre
+		};
+
+		if (modCode.length != 0 && modCode !== 'test') {
+			$("#createAccountError").text("Invalid Moderator code");
+			return;
+		} else if (modCode == 'test') {
+			accountInfo['user_type'] = 1;
+		}
+
+		$.post("./processRegistration", accountInfo, function (data) {
+			if (data) {
+				$("#createAccountError").text(data);
+			} else {
+				$("#createModal").modal('hide');
+				window.location.href = './';
+			}
+		});
 	});
-});
 
 
 	//Creates a new album for the user

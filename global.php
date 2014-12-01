@@ -5,6 +5,8 @@ require_once 'config.php';
 
 require_once 'views/viewHelpers.php';
 
+$uploads_dir = '../uploads';
+
 // Helper method to activate the nav bar tabs based on whatever is clicked.
 function echoActiveClassIfRequestMatches($requestUri)
 {

@@ -1,0 +1,42 @@
+Options -Indexes
+
+RewriteEngine on
+
+RewriteRule ^$ controller/home.php
+
+RewriteRule ^me$ controller/me.php
+RewriteRule ^delete$ controller/user_delete.php
+RewriteRule ^updateUser$ controller/user_update.php
+RewriteRule ^forgot$ controller/user_forgot.php
+RewriteRule ^processLogin/?$ controller/user_login.php
+RewriteRule ^processRegistration/?$ controller/user_register.php
+RewriteRule ^logoff/?$ controller/user_logoff.php
+
+RewriteRule ^comment/delete$ controller/comment_delete.php
+RewriteRule ^comment$ controller/comment_add.php
+
+RewriteRule ^collaborate$ controller/collaborate.php
+RewriteRule ^uncollaborate$ controller/uncollaborate.php
+
+RewriteRule ^promote$ controller/promote.php
+RewriteRule ^demote$ controller/demote.php
+
+
+RewriteRule ^album/create$ controller/album_create.php
+RewriteRule ^([a-zA-Z0-9]+)/album/delete$ controller/album_delete.php
+RewriteRule ^([a-zA-Z0-9]+)/album/get$ controller/album_get.php
+RewriteRule ^([a-zA-Z0-9]+)/album/update$ controller/album_update.php
+
+RewriteRule ^track/create$ controller/track_create.php
+RewriteRule ^track/delete$ controller/track_delete.php
+RewriteRule ^track/edit$ controller/track_edit.php
+RewriteRule ^track/download/(.*)?$ controller/track_download.php?p=$1
+
+
+RewriteRule ^community/?$ controller/community.php
+RewriteRule ^community/(.*)?$ controller/community.php?g=$1
+
+RewriteRule ^collabs/?$ controller/collabs.php
+
+RewriteRule ^([a-zA-Z0-9]+)/?$ controller/home.php?u=$1
+RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9'\ ]+)$ controller/album.php

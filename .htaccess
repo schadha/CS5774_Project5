@@ -2,41 +2,39 @@ Options -Indexes
 
 RewriteEngine on
 
-RewriteRule ^$ controller/home.php
+RewriteRule ^$ controller/UserController.php?method=home
 
-RewriteRule ^me$ controller/me.php
-RewriteRule ^delete$ controller/user_delete.php
-RewriteRule ^updateUser$ controller/user_update.php
-RewriteRule ^forgot$ controller/user_forgot.php
-RewriteRule ^processLogin/?$ controller/user_login.php
-RewriteRule ^processRegistration/?$ controller/user_register.php
-RewriteRule ^logoff/?$ controller/user_logoff.php
+RewriteRule ^me$ controller/UserController.php?method=whoami
+RewriteRule ^delete$ controller/UserController.php?method=delete
+RewriteRule ^updateUser$ controller/UserController.php?method=update
+RewriteRule ^processLogin/?$ controller/UserController.php?method=login
+RewriteRule ^processRegistration/?$ controller/UserController.php?method=register
+RewriteRule ^logoff/?$ controller/UserController.php?method=logoff
 
-RewriteRule ^comment/delete$ controller/comment_delete.php
-RewriteRule ^comment$ controller/comment_add.php
+RewriteRule ^comment/delete$ controller/CommentController.php?method=delete
+RewriteRule ^comment$ controller/CommentController.php?method=add
 
-RewriteRule ^collaborate$ controller/collaborate.php
-RewriteRule ^uncollaborate$ controller/uncollaborate.php
+RewriteRule ^collaborate$ controller/UserController.php?method=collaborate
+RewriteRule ^uncollaborate$ controller/UserController.php?method=uncollaborate
 
-RewriteRule ^promote$ controller/promote.php
-RewriteRule ^demote$ controller/demote.php
+RewriteRule ^promote$ controller/UserController.php?method=promote
+RewriteRule ^demote$ controller/UserController.php?method=demote
 
+RewriteRule ^album/create$ controller/AlbumController.php?method=create
+RewriteRule ^([a-zA-Z0-9]+)/album/delete$ controller/AlbumController.php?method=delete
+RewriteRule ^([a-zA-Z0-9]+)/album/get$ controller/AlbumController.php?method=get
+RewriteRule ^([a-zA-Z0-9]+)/album/update$ controller/AlbumController.php?method=update
 
-RewriteRule ^album/create$ controller/album_create.php
-RewriteRule ^([a-zA-Z0-9]+)/album/delete$ controller/album_delete.php
-RewriteRule ^([a-zA-Z0-9]+)/album/get$ controller/album_get.php
-RewriteRule ^([a-zA-Z0-9]+)/album/update$ controller/album_update.php
-
-RewriteRule ^track/create$ controller/track_create.php
-RewriteRule ^track/delete$ controller/track_delete.php
-RewriteRule ^track/edit$ controller/track_edit.php
-RewriteRule ^track/download/(.*)?$ controller/track_download.php?p=$1
+RewriteRule ^track/create$ controller/TrackController.php?method=create
+RewriteRule ^track/delete$ controller/TrackController.php?method=delete
+RewriteRule ^track/edit$ controller/TrackController.php?method=edit
+RewriteRule ^track/download/(.*)?$ controller/TrackController.php?method=download&p=$1
 
 
-RewriteRule ^community/?$ controller/community.php
-RewriteRule ^community/(.*)?$ controller/community.php?g=$1
+RewriteRule ^community/?$ controller/UserController.php?method=community
+RewriteRule ^community/(.*)?$ controller/UserController.php?method=community&g=$1
 
-RewriteRule ^collabs/?$ controller/collabs.php
+RewriteRule ^collabs/?$ controller/UserController.php?method=collabs
 
-RewriteRule ^([a-zA-Z0-9]+)/?$ controller/home.php?u=$1
-RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9'\ ]+)$ controller/album.php
+RewriteRule ^([a-zA-Z0-9]+)/?$ controller/UserController.php?method=home&u=$1
+RewriteRule ^([a-zA-Z0-9]+)/([a-zA-Z0-9'\ ]+)$ controller/AlbumController.php?method=featured
