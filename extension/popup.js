@@ -1,4 +1,4 @@
-var URL = 'http://localhost/CS5774/Project51/';
+var URL = 'http://localhost/CS5774/Project5/';
 
 $(document).ready(function(){
     
