@@ -20,6 +20,10 @@ RewriteRule ^uncollaborate$ controller/UserController.php?method=uncollaborate
 RewriteRule ^promote$ controller/UserController.php?method=promote
 RewriteRule ^demote$ controller/UserController.php?method=demote
 
+RewriteRule ^processExtensionLogin/?$ controller/ExtensionController.php?method=login
+RewriteRule ^extensionGetAlbums/?$ controller/ExtensionController.php?method=getAlbums
+RewriteRule ^extensionGetCollaborators/?$ controller/ExtensionController.php?method=getCollabs
+
 RewriteRule ^album/create$ controller/AlbumController.php?method=create
 RewriteRule ^([a-zA-Z0-9]+)/album/delete$ controller/AlbumController.php?method=delete
 RewriteRule ^([a-zA-Z0-9]+)/album/get$ controller/AlbumController.php?method=get
