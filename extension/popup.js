@@ -24,8 +24,49 @@ $(document).ready(function() {
                 $('#btnDownload').prop('disabled', false); //Enable the button
             }
         } else if (request.username) {
-            initializePage(request.username); //Initialize the main page after logging in or opening the extension
+            initializePage(request.username); //Initialize the main page after opening the extension
         }
+    });
+
+    //Press enter to login
+    $("#password").keyup(function(event){
+        if(event.keyCode == 13){
+            $("#login").click();
+        }
+    });
+
+    //Handles logging in
+    $("#login").click(function () {
+        var username = $("#username").val();
+        var password = $("#password").val();
+
+        if (!$("#username") || username.length == 0) {
+            setErrorMessage("Please enter username!");
+            return;
+        }
+
+        if (!$("#password") || password.length == 0) {
+            setErrorMessage("Please enter password!");
+            return;
+        }
+
+        var loginInfo = {
+            "username": username,
+            "password": password
+        };
+
+        $.post(URL + "extensionProcessLogin", loginInfo, function (data) {
+            if (data) {
+                setErrorMessage(data);
+            } else {
+                chrome.extension.sendRequest({
+                    'action': 'setUsername',
+                    'username': username
+                });
+
+                initializePage(username); //Initialize the main page after logging in
+            }
+        });
     });
 
     //Accepts a collaboration request
@@ -52,28 +93,30 @@ $(document).ready(function() {
         });
     });
 
-    //
+    //Efficient tab changing function.
     var lastTab = 0;
     $(".tab").click(function() {
         var num = this.id.match(/\d+/)[0];
 
         if (lastTab != num) {
             lastTab = num;
-            setErrorMessage('');
+            resetInputs(); //Removes all error messages
+
         }
 
-        $("#tab_" + num).tab('show');
-        $(".panel").hide();
-        $("#panel_" + num).show();
+        $("#tab_" + num).tab('show'); //Highlights the clicked tab
+        $(".panel").hide(); //Hides all panels
+        $("#panel_" + num).show(); //Shows the panel associated with the tab
 
         if (num == 4) {
-            getTracks("edit");
+            getTracks("edit"); //Tracks for edit panel
         } else if (num == 5) {
-            getTracks("delete");
+            getTracks("delete"); //Tracks for delete panel
         }
 
     });
 
+    //Handles logging out
     $('#logoutTab a').click(function (e) {
         e.preventDefault();
 
@@ -83,16 +126,15 @@ $(document).ready(function() {
             'action': 'setUsername',
             'username': ''
         }); 
-
-        resetLoginPanel();
+        resetInputs();
 
         for (var i = 1; i <= 5; i++) {
-            $('#panel_'+i).hide();
+            $('#panel_'+i).hide(); //Hides all panels
         }
 
         $('#navPanel').hide();
-        chrome.browserAction.setBadgeText({text:""});
-        $('#loginPanel').show();
+        chrome.browserAction.setBadgeText({text:""}); //Resets the extension badge
+        $('#loginPanel').show(); //Shows the login panel
 
     });
 
@@ -133,7 +175,7 @@ $(document).ready(function() {
                     } else {
                         $('#errorMessage').css('color', 'green');
                         setErrorMessage("Album Created Successfully");
-                        getAlbums(username);
+                        getAlbums(username); //Fetches new album list
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) 
@@ -146,10 +188,10 @@ $(document).ready(function() {
         $("#albumForm").submit();
     });
 
-    //Creates a new track for that album
+    //Creates a new track for an album
     $("#createtrack").click(function(e) {
         e.preventDefault();
-        var track_album = $('#track_album1 option:selected').text();
+        var track_album = $('#track_album1 option:selected').text(); //Album name selected from a dropdown menu
         var track_path = $("#track_data").val();
 
         if (track_name.length == 0 || !track_path) {
@@ -191,13 +233,14 @@ $(document).ready(function() {
         }
     });
 
+    //Edits a track for an album
     $('#track_edit_submit').click(function (e) {
         e.preventDefault();
 
-        var trackAlbum = $('#track_album2 option:selected').text();
+        var trackAlbum = $('#track_album2 option:selected').text(); //Album selected from the dropdown menu
         var albumOwner = $('#loggedInUsername').text();
         var trackName = $("#new_track").val();
-        var oldTrackName = $('#track_name_select1 option:selected').text();
+        var oldTrackName = $('#track_name_select1 option:selected').text(); //Track name selected from the dropdown menu
 
         if ($("#new_track").val().length == 0) {
             setErrorMessage("Please enter a valid new track name!");
@@ -219,11 +262,12 @@ $(document).ready(function() {
                 $('#errorMessage').css('color', 'green');
                 setErrorMessage("Edited Successfully");
                 $('#new_track').val('');
-                $('#tab_4 a').click();
+                $('#tab_4 a').click(); //Refresh page to show track name change
             }
         });		
     });
 
+    //Delete a track for an album
     $('#track_delete_submit').click(function (e) {
         e.preventDefault();
 
@@ -245,105 +289,70 @@ $(document).ready(function() {
             else {
                 $('#errorMessage').css('color', 'green');
                 setErrorMessage("Deleted Successfully");
-                $('#tab_5 a').click();
+                $('#tab_5 a').click(); //Refresh page to show track has been deleted successfully
             }
         });
     });
 
+    // If album selection is changed, fetch tracks associated with that album
     $('#track_album2').on('change', function() {
         getTracks("edit");
     });
 
+    // If album selection is changed, fetch tracks associated with that album
     $('#track_album3').on('change', function() {
         getTracks("delete");
     });
 
-    //Press enter to login
-    $("#password").keyup(function(event){
-        if(event.keyCode == 13){
-            $("#login").click();
-        }
-    });
-
-    $("#login").click(function () {
-        var username = $("#username").val();
-        var password = $("#password").val();
-
-        if (!$("#username") || username.length == 0) {
-            setErrorMessage("Please enter username!");
-            return;
-        }
-
-        if (!$("#password") || password.length == 0) {
-            setErrorMessage("Please enter password!");
-            return;
-        }
-
-        var loginInfo = {
-            "username": username,
-            "password": password
-        };
-
-        $.post(URL + "extensionProcessLogin", loginInfo, function (data) {
-            if (data) {
-                setErrorMessage(data);
-            } else {
-                chrome.extension.sendRequest({
-                    'action': 'setUsername',
-                    'username': username
-                });
-
-                initializePage(username);
-            }
-        });
-    });
-
+    //Handle downloading/converting the YouTube video based on the current URL
     $('#btnDownload').click(function(e) {
         e.preventDefault(); // don't submit form
         setErrorMessage(''); // clear any error messages
 
         var url = $('#btnDownload').val();
 
-        chrome.downloads.download({url: 'http://youtubeinmp3.com/fetch/?video=' + url}, function(id) {
+        chrome.downloads.download({url: 'http://youtubeinmp3.com/fetch/?video=' + url}, function(id) { //Download the file with the given URL
             chrome.downloads.search({id: id}, function(itemArr) {
                 var item = itemArr[0];
-                if (item.mime.indexOf("html") > -1) {
-                    chrome.downloads.cancel(item.id);
-                    chrome.tabs.update(null, {url: 'http://youtubeinmp3.com/download/?video=' + url}, null);
-                    alert("Convert video to MP3 using this website.");
+                if (item.mime.indexOf("html") > -1) { //If file type is of html, that means the video hasn't been converted on youtubeinmp3's database.
+                    chrome.downloads.cancel(item.id); //Cancel the download
+                    chrome.tabs.update(null, {url: 'http://youtubeinmp3.com/download/?video=' + url}, null); //Change tab to the conversion page
+                    alert("Convert video to MP3 using this website."); //Show an alert to redirect the user to the conversion website
                 }
             });
         });
     });
 });
 
+//Initialize the main page after logging in or opening the extension
 function initializePage(username) {
-    resetLoginPanel(); // reset the login panel
+    resetInputs(); // reset the login panel
     $('#loginPanel').hide(); // hide the login panel
 
-    checkCollaboratorRequests(username);
+    checkCollaboratorRequests(username); //Update collaborator requests check
 
     $('#loggedInUsername').text(username); // show username
 
-    $("#homePanel").show();
-    $('#navPanel').show();
-    $('#tab_1 a').click();
+    $("#homePanel").show(); //Show the home panel
+    $('#navPanel').show(); //Show the nav bar
+    $('#tab_1 a').click(); //Make sure the first tab is clicked
 
-    $('#album_owner').val(username);
+    $('#album_owner').val(username); //Set the album owner to the logged in user
 
-    requestCurrentTabURL();
+    requestCurrentTabURL(); //Get the URL of the current page to check for YouTube video
 
-    getAlbums(username);
+    getAlbums(username); //Fetch the albums associated with the user
 }
 
 
-// ask the background script for the current tab URL
+// Ask the background script for the current tab URL
 function requestCurrentTabURL() {
     chrome.extension.sendRequest({
         'action': 'getURL' 
     });   
 }
 
+//Fetch the albums and create dropdown menu options for album selection
 function getAlbums(username) {
     $.post(URL + "extensionGetAlbums", {"album_owner": username}, function (data) {
         var jsonData = JSON.parse(data);
@@ -351,21 +360,21 @@ function getAlbums(username) {
     });
 }
 
+//Create all dropdown menu options for album selection
 function createAlbumOptions( jsonData ) {
-    for (var i = 1; i <= 3; i++) {
-        $('#track_album'+ i +' option').remove(); // first remove all options
+    $('.album_dropdown option').remove(); // first remove all options
 
-        for (var fieldIndex in jsonData) { // then populate them
-            $('#track_album' + i).append($("<option></option>").attr("value", fieldIndex).text(jsonData[fieldIndex].album_name));
-        }
+    for (var fieldIndex in jsonData) { // then populate them
+        $('.album_dropdown').append($("<option></option>").attr("value", fieldIndex).text(jsonData[fieldIndex].album_name));
     }
 }
 
+//Fetch the tracks for the selected album and create dropdown menu options for track selection
 function getTracks(panel) {
     var album_name = "";
 
     if (panel == "edit") {
-        album_name = $('#track_album2 option:selected').text();   
+        album_name = $('#track_album2 option:selected').text();
     } else {
         album_name = $('#track_album3 option:selected').text();   
     }
@@ -381,40 +390,42 @@ function getTracks(panel) {
     });
 }
 
+//Create all dropdown menu options for track selection
 function createTrackOptions(jsonData, panel) {
-    for (var i = 1; i <= 2; i++) {
-        $('#track_name_select' + i + ' option').remove(); // first remove all options
+    $('.track_dropdown option').remove(); // first remove all options
 
-        if (!jsonData) {
-            $('#track_name_select' + i).append($("<option></option>").text("No Tracks in this Album"));
-            $('#track_name_select' + i).attr('disabled', 'disabled');
-
-            if (panel == "edit") {
-                $('#new_track').attr('disabled', 'disabled');
-                $('#track_edit_submit').attr('disabled', 'disabled');
-            } else {
-                $('#track_delete_submit').attr('disabled', 'disabled');
-            }
+    if (!jsonData) { //If there are no tracks, say so in the dropdown menu
+        $('.track_dropdown').append($("<option></option>").text("No Tracks in this Album"));
+        $('.track_dropdown').attr('disabled', 'disabled');
+        
+        //Disable different elements when in different panels.
+        if (panel == "edit") {
+            $('#new_track').attr('disabled', 'disabled');
+            $('#track_edit_submit').attr('disabled', 'disabled');
         } else {
-            $('#track_name_select' + i).removeAttr('disabled');
-            if (panel == "edit") {    
-                $('#new_track').removeAttr('disabled');
-                $('#track_edit_submit').removeAttr('disabled');
-            } else {
-                $('#track_delete_submit').removeAttr('disabled');
-            }
-            for (var fieldIndex in jsonData) { // then populatem them
-                $('#track_name_select' + i).append($("<option></option>").attr("value", fieldIndex).text(jsonData[fieldIndex].track_name));
-            }
+            $('#track_delete_submit').attr('disabled', 'disabled');
+        }
+    } else {
+        $('.track_dropdown').removeAttr('disabled');
+        //Enable different elements when in different panels.
+        if (panel == "edit") {    
+            $('#new_track').removeAttr('disabled');
+            $('#track_edit_submit').removeAttr('disabled');
+        } else {
+            $('#track_delete_submit').removeAttr('disabled');
+        }
+        for (var fieldIndex in jsonData) { // then populate them
+            $('.track_dropdown').append($("<option></option>").attr("value", fieldIndex).text(jsonData[fieldIndex].track_name));
         }
     }
 }
 
+//Check if there are pending collaborator requests
 function checkCollaboratorRequests(username) {
     $('#collabPanel').hide();
-    $('#collabs').empty();
+    $('#collabs').empty(); //Reset and empty the collaboration panel
 
-    var counter = 0;
+    var counter = 0; //Counter for extension badge
 
     $.post(URL + "extensionGetCollaborators", {"user": username}, function (data) {
         var jsonData = JSON.parse(data);
@@ -422,8 +433,7 @@ function checkCollaboratorRequests(username) {
         for (var fieldIndex in jsonData) { // then populate them
             var obj = jsonData[fieldIndex];
 
-
-            if (obj['sent_by'] !== username) {
+            if (obj['sent_by'] !== username) { //Show only if the request is not sent by logged in user
                 $('#collabPanel').show();
 
                 var date = new Date(obj['modified']);
@@ -433,24 +443,27 @@ function checkCollaboratorRequests(username) {
                 $('#collabs').append($("<button></button>").attr('class','btn btn-success accept_request').attr('value', obj['sent_by']).text("Accept"));
                 $('#collabs').append($("<button></button>").attr('class','btn btn-danger deny_request').attr('value', obj['sent_by']).text("Deny"));
 
-                counter+=1;
+                counter+=1; //Increment badge counter
             }
         }
-        if (counter == 0) {
+        
+        
+        if (counter == 0) { //Show blank badge when no notifications
             chrome.browserAction.setBadgeText({text:""});
-        } else {
+        } else { //Set the extension badge if there are notifications
             chrome.browserAction.setBadgeText({text:""+counter});
         }
     });
 }
 
-function resetLoginPanel() {
+//Resets all error messages and input fields
+function resetInputs() {
     setErrorMessage(''); // clear any error messages
-    $('#username').val('');
-    $('#password').val('');
-    $('.form-control').val('');
+    $('.form-control').not("#album_owner").val(''); // clear any input form sections (except album_owner)
+    $('select option:first-child').attr("selected", "selected"); //Resets dropdown selection
 }
 
+//Sets the error message with the given message
 function setErrorMessage(msg) {
     $('#errorMessage').text(msg);
 }

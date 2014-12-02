@@ -1,11 +1,14 @@
 <?php
 
-/* This file is the controller
- * for all comment related actions.
+/**
+ * This file is the controller for all extension related actions.
+ * Slightly different methods because our main website's $_SESSION is not being used.
  */
 
-$method = $_SERVER['QUERY_STRING'];
+$method = $_SERVER['QUERY_STRING']; //Get the method query string
 
+
+//If else tree for deciding what method to call based on the query
 if (strcmp($method, "method=login") == 0) {
     login();
 } else if (strcmp($method, "method=getAlbums") == 0) {
@@ -24,6 +27,7 @@ if (strcmp($method, "method=login") == 0) {
     echo 'Unkown method!';
 }
 
+//Login the user. Differs from main website login because session is separate
 function login() {
     require_once '../global.php';
 
@@ -43,6 +47,7 @@ function login() {
 
 }
 
+//Fetch albums for the user
 function getAlbums() {
     require_once '../global.php';
 
@@ -52,6 +57,7 @@ function getAlbums() {
     echo json_encode($albums);
 }
 
+//Create an album for the user
 function createAlbum() {
     require_once '../global.php';
 
@@ -79,7 +85,7 @@ function createAlbum() {
     
     $properties['album_owner'] = $properties['username'];
     
-    //Create a new album
+    //Create a new album event
     if (Album::albumExist($properties['album_name'], $properties['username']) != null) {
         $error["Error"] = "Album with that name already exists for you!";
     } else {
@@ -99,6 +105,7 @@ function createAlbum() {
     echo json_encode($error);
 }
 
+//Fetch the tracks for an album
 function getTracks() {
     require_once '../global.php';
 
@@ -109,6 +116,7 @@ function getTracks() {
     echo json_encode($tracks);
 }
 
+//Get the collaboration requests for a user
 function getCollabs() {
     require_once '../global.php';
 
@@ -120,6 +128,7 @@ function getCollabs() {
     echo json_encode($collabs);
 }
 
+// Send a collaboration acceptance
 function collaborate() {
     require_once '../global.php';
 
@@ -151,6 +160,7 @@ function collaborate() {
     }
 }
 
+// Send a collaboration denial
 function uncollaborate() {
     require_once '../global.php';
 
