@@ -28,6 +28,7 @@ RewriteRule ^extensionGetCollaborators/?$ controller/ExtensionController.php?met
 RewriteRule ^extensionCollaborate$ controller/ExtensionController.php?method=collaborate
 RewriteRule ^extensionUncollaborate$ controller/ExtensionController.php?method=uncollaborate
 RewriteRule ^extensionGetTracks$ controller/ExtensionController.php?method=getTracks
+RewriteRule ^extensionCreateTrack$ controller/ExtensionController.php?method=createTrack
 
 RewriteRule ^album/create$ controller/AlbumController.php?method=create
 RewriteRule ^([a-zA-Z0-9]+)/album/delete$ controller/AlbumController.php?method=delete

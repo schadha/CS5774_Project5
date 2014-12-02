@@ -203,7 +203,7 @@ $(document).ready(function() {
                 formData.append("track_album", track_album);
 
                 $.ajax({
-                    url: URL + "track/create",
+                    url: URL + "extensionCreateTrack",
                     type: 'POST',
                     data:  formData,
                     mimeType:"multipart/form-data",
