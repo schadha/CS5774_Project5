@@ -169,15 +169,15 @@
     <script src="<?=SERVER_PATH?>audiojs/audiojs/audio.min.js"></script>
     <script src="<?=SERVER_PATH?>javascript/audioSetup.js"></script>
 
-    <div id="wrapper">
-        <audio preload="none"></audio>
-        <ol class="playlist">
-            <?php
-foreach($tracks as $a) {
-$name = $a['track_name'];
-$path = $a['track_path'];
-$owner = $a['track_owner'];
-?>
+                <div id="wrapper">
+                    <audio preload="none"></audio>
+                    <ol class="playlist">
+                        <?php
+            foreach($tracks as $a) {
+            $name = $a['track_name'];
+            $path = $a['track_path'];
+            $owner = $a['track_owner'];
+            ?>
             <li><a href="#" data-src=<?= $path ?>><?= $name ?></a></li>
     <?php } ?> <!-- foreach -->
     <?php } ?>
@@ -186,9 +186,10 @@ $owner = $a['track_owner'];
 <?php if($_SESSION['username'] == $curAlbum["album_owner"]) { ?>
 <div class="form-group formButtons trackButtons">
     <button type="button" id="trackModalButton" class="btn btn-success" data-toggle="modal" data-target="#trackModal">Add Track</button>
-    <button type="button" class="btn btn-success edittrack" data-toggle="modal" data-target="#editTrackModal">Edit Track</button>
-    <button type="button" class="btn btn-danger deletetrack" data-toggle="modal" data-target="#deleteTrackModal">Delete Track</button>
-
+    <?php if(!is_null($tracks)){ ?>
+        <button type="button" class="btn btn-success edittrack" data-toggle="modal" data-target="#editTrackModal">Edit Track</button>
+        <button type="button" class="btn btn-danger deletetrack" data-toggle="modal" data-target="#deleteTrackModal">Delete Track</button>
+    <?php } ?>
 </div> <!-- Add a track if users are collaborating with eachother -->
 <?php } else if (Collaborator::isCollaborator($_SESSION['username'], $curAlbum['album_owner'])['status'] == 1) { ?> <!-- is_null-->
 <div class="form-group formButtons">
