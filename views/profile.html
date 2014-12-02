@@ -7,6 +7,7 @@
         <?php } else { ?>
         <h1 style="text-align: left;"><?=$user?></h1>
         <?php } ?>
+        <h3 class="prof">(<?= $curUser['first_name']." ".$curUser['last_name']. " - ". $curUser['favorite_genre'] ?>)</h3>
         <!-- Only able to edit profile if logged in user is on his/her own page. -->
         <?php if($_SESSION['username'] == $user) { ?>
         <button type="button" class="btn btn-success profile" data-toggle="modal" data-target="#editModal">Edit Profile</button>
@@ -29,9 +30,9 @@
                 <button type="button" class="btn btn-danger" id="admindeleteaccount" value=<?= $user ?>>Delete Account</button>
             <?php } ?>
         <?php } ?>
-        <h3 class="prof"><?= $curUser['first_name']." ".$curUser['last_name']. " - ". $curUser['favorite_genre'] ?></h3>
 
         <!-- Show events feed for that user -->
+        <h3>My Feed</h3>
         <ul class="events">
           <?php 
           $events = Event::getEvents('username', $curUser['username']);
@@ -41,6 +42,16 @@
             </div>
             <?php } ?>
         </ul>
+        <?php if (sizeof($tweets) > 0) { ?>
+          <h3>Twitter Feed</h3>
+          <ul class="tweets">
+            <?php foreach($tweets as $tweet) { ?>
+              <div class="event">
+                <?php echo $tweet ?>
+              </div>
+              <?php } ?>
+          </ul>
+        <?php } ?>
       </div>
 
       <!-- Edit Modal -->
@@ -87,6 +98,10 @@
                     <option>Rock</option>
                     <option>Country</option>
                   </select>
+                </div>
+                <div class="form-group">
+                  <label for="twitter">Twitter</label>
+                  <input type="text" class="form-control" id="twitter" name="twitter">
                 </div>
                 <div class="form-group formButtons">
                   <button class="btn btn-success" name="updateaccount" id="updateaccount">Update Account</button>
@@ -190,7 +205,23 @@
             <?php } ?>
           </div>
         </div>
-
       </div>
     </body>
     </html>
+    <!-- In place to keep refreshing tweets, in the html so it is local -->
+    <script>
+      setInterval(function() {
+          $.post("./twitterfeed", function (data) {
+              data = JSON.parse(data);
+              var html = "";
+              for (var i = 0; i < data.length; i++) {
+                html += '<div class="event">' + data[i] + '</div>';
+              }
+              if (html.length > 0) {
+                $(".tweets").html(html);
+              }
+          });
+
+        }, 10000);
+
+    </script>

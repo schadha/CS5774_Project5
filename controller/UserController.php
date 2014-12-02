@@ -121,6 +121,7 @@ function userRegister() {
     $password2 = $_POST['password2'];
     $user_type = $_POST['user_type'];
     $favorite_genre = $_POST['favorite_genre'];
+    $twitterName = $_POST['twitter'];
 
     // do the passwords match?
     if($password1 != $password2) {
@@ -141,7 +142,8 @@ function userRegister() {
                 'last_name'=> $lName, 
                 'password'=> $password1,
                 'user_type'=>$user_type,
-                'favorite_genre' => $favorite_genre
+                'favorite_genre' => $favorite_genre,
+                'twitter' => $twitterName
             );
 
             $newUser = new User($info);
@@ -265,7 +267,7 @@ function home() {
         }
 
         // if user exists then show their profile, else 404
-        if (User::userExists("username", $user)) {
+        if (($curUser = User::userExists("username", $user))) {
             $pageName = 'CollabTunes - '.$user;
 
             $albums = Album::getAlbums("album_owner", $user);
@@ -285,6 +287,20 @@ function home() {
                 }
             }
 
+            $twitterName = $curUser['twitter'];
+            $tweets = array();
+
+            if (strlen($twitterName) != null) {
+              require_once './twitteroauth.php';
+
+                $connection = new TwitterOAuth("mJY9r8kDCUtMJUNiGwfZ2gLxK", "oLzWiKDik54rc1rPYgY2eBmxc0l15U3H6JK0xkBxIlIxp8QTiY", "911592974-xPcUDBEkeBV79vAhTYeVCXXAwnOQSjZhN2ayvwKs", "HGcHF1HyGLZLPJR3gmjMS70jGitmh5UPpdJ3VqCq0cXVN");
+                $content = $connection->get('https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=' . $twitterName);
+
+                for ($i = 0; $i < sizeof($content); $i++) {
+                    array_push($tweets, $content[$i]->text . ' ' . $content[$i]->created_at);
+                } 
+            }
+            
             require_once '../views/header.html';
             require_once '../views/profile.html';
         } else {
@@ -318,6 +334,27 @@ function community() {
     require_once '../views/header.html';
 
     if(isset($_SESSION['username'])) {
+
+        $twitterNames = array();
+        $tweets = array();
+
+        if ($curUser = User::publicUserInfo("username", $_SESSION['username'])) {
+            $collabUser = new User($curUser);
+            $twitterNames = json_decode($collabUser->getTwitterNamesForCollabs());
+        }
+
+        if (sizeof($twitterNames) > 0) {
+            require_once './twitteroauth.php';
+            $connection = new TwitterOAuth("mJY9r8kDCUtMJUNiGwfZ2gLxK", "oLzWiKDik54rc1rPYgY2eBmxc0l15U3H6JK0xkBxIlIxp8QTiY", "911592974-xPcUDBEkeBV79vAhTYeVCXXAwnOQSjZhN2ayvwKs", "HGcHF1HyGLZLPJR3gmjMS70jGitmh5UPpdJ3VqCq0cXVN");
+
+            for ($i = 0; $i < sizeof($twitterNames); $i++) {
+                if ($twitterNames[$i] != null && strlen($twitterNames[$i]) > 0) {
+                    $content = $connection->get('https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=' . $twitterNames[$i] . '&count=1');
+                    array_push($tweets, $content[0]->text . ' ' . $content[0]->created_at);
+                }
+            }
+        }
+
         require_once '../views/featured_logged_in.html';
     } else {
         require_once '../views/featured.html';

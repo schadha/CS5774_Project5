@@ -315,7 +315,27 @@ div.play-pause p { margin-left: -6px; }
 .events {
     padding-left: 0px;
     font-size: 1.3em;
-    height:50vh;
+    height:25vh;
+    width:100%;
+    overflow-y:scroll;
+    margin-top: 10px;
+}
+
+.events_main {
+	padding-left: 0px;
+    font-size: 1.3em;
+    height:40vh;
+    width:100%;
+    overflow-y:scroll;
+    margin-top: 10px;
+}
+
+/*Tweets related styling*/
+.tweets {
+    padding-left: 0px;
+    margin-top: 10px;
+    font-size: 1.3em;
+    height:30vh;
     width:100%;
     overflow-y:scroll;
 }

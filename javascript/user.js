@@ -46,8 +46,8 @@ $(document).ready(function() {
 		var vWord = $(".verifypassword").val();
 		var modCode = $("#mod_code").val();
 		var favoriteGenre = $("#favoriteGenre").val();
+		var twitterValue = $("#twitter").val();
 
-		console.log(favoriteGenre);
 		if (!fName || !lName || !email || !uName || !pWord || !vWord || fName.length == 0 ||
 			lName.length == 0 || email.length == 0 || uName.length == 0 ||
 			pWord.length == 0 || vWord.length == 0 || favoriteGenre == "Select a genre...") {
@@ -69,7 +69,8 @@ $(document).ready(function() {
 			"password1": pWord,
 			"password2": vWord,
 			"user_type": 0,
-			"favorite_genre": favoriteGenre
+			"favorite_genre": favoriteGenre,
+			"twitter": twitterValue
 		};
 
 		if (modCode.length != 0 && modCode !== 'test') {
@@ -99,6 +100,7 @@ $(document).ready(function() {
 				$("#email").val(curUser["email"]);
 				$("#user").val(curUser["username"]);
                 $("#favoriteGenre").val(curUser["favorite_genre"]);
+                $("#twitter").val(curUser['twitter']);
 			}
 		});		
 	});
@@ -112,9 +114,7 @@ $(document).ready(function() {
 			'admin': 0
 		},
 		function (data) {
-			if (data) {
-				window.location.href = "./";
-			}
+			window.location.href = "./";
 		});
 	});
 
@@ -143,6 +143,7 @@ $(document).ready(function() {
 		var pW = $("#user_password").val();
 		var verPW = $("#verify_password").val();
         var favoriteGenre = $("#favoriteGenre").val();
+        var twitter = $("#twitter").val();
         
 		if (fName.length == 0 || lName.length == 0 || email.length == 0 || user.length == 0 || favoriteGenre == "Select a genre...") {
 			$("#editProfileError").text("All values except Password and Verify Password are mandatory!");
@@ -159,7 +160,8 @@ $(document).ready(function() {
 				"first_name": fName,
 				"last_name": lName,
                 "email": email,
-                "favorite_genre": favoriteGenre
+                "favorite_genre": favoriteGenre,
+                "twitter": twitter
 			};
 
 			if (pW) {

@@ -14,6 +14,7 @@ class User {
 	protected $first_name;
 	protected $last_name;
     protected $favorite_genre;
+    protected $twitter;
 
 	public function __construct($args = array()) {
 		$defaultArgs = array(
@@ -23,7 +24,8 @@ class User {
 			'first_name' => null,
 			'last_name' => null,
 			'user_type'=>null,
-            'favorite_genre' => ''
+            'favorite_genre' => '',
+            'twitter'=>''
 			);
 
 		$args += $defaultArgs;
@@ -35,6 +37,7 @@ class User {
 		$this->last_name = $args['last_name'];
 		$this->user_type = $args['user_type'];
         $this->favorite_genre = $args['favorite_genre'];
+        $this->twitter = $args['twitter'];
 	}
 
 	//Creates a new user in the database
@@ -42,7 +45,7 @@ class User {
 		$db = Db::instance();
 
 		if (($curUser = self::doesUserExist("username", $this->username)) != null) {
-			$query = sprintf("update %s (%s = '%s', %s = '%s', %s = '%s', %s = '%s', `%s` = '%s', `%s` = '%s') where `%s` = '%s'",
+			$query = sprintf("update %s (%s = '%s', %s = '%s', %s = '%s', %s = '%s', `%s` = '%s', `%s` = '%s', `%s`='%s') where `%s` = '%s'",
 				self::DB_TABLE,
 				'email',
 				$this->email,
@@ -56,11 +59,13 @@ class User {
 				$this->user_type,
                 'favorite_genre',
                 $this->favorite_genre,
+                'twitter',
+                $this->twitter,
 				'username',
 				$this->username
 				);
 		} else {
-			$query = sprintf("insert into %s (`%s`, `%s`, `%s`, `%s`, `%s`,`%s`,`%s`) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+			$query = sprintf("insert into %s (`%s`, `%s`, `%s`, `%s`, `%s`,`%s`,`%s`,`%s`) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 				self::DB_TABLE,
 				'email',
 				'username',
@@ -69,13 +74,15 @@ class User {
 				'last_name',
 				'user_type',
                 'favorite_genre',
+                'twitter',
 				$this->email,
 				$this->username,
 				$this->password,
 				$this->first_name,
 				$this->last_name,
 				$this->user_type,
-                $this->favorite_genre
+                $this->favorite_genre,
+                $this->twitter
 				);
 		}
 		$db->execute($query);
@@ -123,7 +130,8 @@ class User {
 				"first_name" => $user->first_name,
 				"last_name" => $user->last_name,
                 "user_type" => $user->user_type,
-                "favorite_genre" => $user->favorite_genre
+                "favorite_genre" => $user->favorite_genre,
+                "twitter" => $user->twitter
 				);
 			return $information;
 		} else {
@@ -246,5 +254,24 @@ class User {
 			$db = Db::instance();
 			$db->execute($query);
 		}
+	}
+
+	//Gets twitter names of collaborators
+	public function getTwitterNamesForCollabs() {
+		$twitterNames = array();
+		$query = sprintf("select twitter from user where username in (select distinct c.friend_two from user as u, collaborators as c where u.username='%s' and u.username=c.friend_one)",
+			$this->username
+		);
+
+		$db = Db::instance();
+		$result = $db->lookup($query);
+
+		if ($result) {
+			$rows = mysql_num_rows($result);
+			for ($i = 0; $i < $rows; $i++) {
+				array_push($twitterNames, mysql_fetch_assoc($result)['twitter']);
+			}
+		}
+		return json_encode($twitterNames);
 	}
 }

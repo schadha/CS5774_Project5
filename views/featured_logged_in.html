@@ -1,7 +1,7 @@
     <div class="container-fluid">
       <div class="col-md-3 me"> <!-- Populate the collaborators feed -->
         <h3 style="text-align: left;">Collaborator Feed</h3>
-          <ul class="events">
+          <ul class="events_main">
             <?php 
             $collaborators = Collaborator::getCollaborators($_SESSION['username'], 1);
             if(count($collaborators) == 0) { ?>
@@ -16,7 +16,17 @@
                 <?php }
             } ?>
         </ul>
-          
+        <?php if (sizeof($tweets) > 0) { ?>
+          <h3 style="text-align: left;">Collaborator Twitter Feed</h3>
+          <ul class="tweets">
+            <?php foreach($tweets as $tweet) { ?>
+              <div class="event">
+                <?php echo $tweet ?>
+              </div>
+              <?php } ?>
+          </ul>
+        <?php } ?>
+
       </div>
         
       <div class="col-md-9 main">
@@ -62,3 +72,25 @@
     </div>
   </body>
 </html>
+
+<!-- In place to keep refreshing tweets, in the html so it is local -->
+<script>
+      setInterval(function() {
+          $.post("./twitterfeed", {
+            "community": true
+            },
+            function (data) {
+              data = JSON.parse(data);
+              var html = "";
+              for (var i = 0; i < data.length; i++) {
+                html += '<div class="event">' + data[i] + '</div>';
+              }
+              if (html.length > 0) {
+                $(".tweets").html(html);
+                console.log(html);
+              }
+          });
+
+        }, 10000);
+
+    </script>
