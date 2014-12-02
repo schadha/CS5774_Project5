@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
 
-  "name": "Track Uploader",
-  "description": "This extension lets users of CollabTunes add an mp3 track with one click.",
+  "name": "CollabTunes",
+  "description": "This extension simplifies the CollabTunes web app.",
   "version": "1.0",
 
   "browser_action": {

@@ -311,13 +311,17 @@ $(document).ready(function() {
 
         var url = $('#btnDownload').val();
 
-        chrome.downloads.download({url: 'http://youtubeinmp3.com/fetch/?video=' + url}, function(id) { //Download the file with the given URL
+        //Download the file with the given URL
+        chrome.downloads.download({url: 'http://youtubeinmp3.com/fetch/?video=' + url}, function(id) {
             chrome.downloads.search({id: id}, function(itemArr) {
                 var item = itemArr[0];
-                if (item.mime.indexOf("html") > -1) { //If file type is of html, that means the video hasn't been converted on youtubeinmp3's database.
+                //If file type is of html, that means the video hasn't been converted on youtubeinmp3's database.
+                if (item.mime.indexOf("html") > -1) { 
                     chrome.downloads.cancel(item.id); //Cancel the download
-                    chrome.tabs.update(null, {url: 'http://youtubeinmp3.com/download/?video=' + url}, null); //Change tab to the conversion page
-                    alert("Convert video to MP3 using this website."); //Show an alert to redirect the user to the conversion website
+                    //Change tab to the conversion page
+                    chrome.tabs.update(null, {url: 'http://youtubeinmp3.com/download/?video=' + url}, null);
+                    //Show an alert to redirect the user to the conversion website
+                    alert("Convert video to MP3 using this website.");
                 }
             });
         });
@@ -397,7 +401,7 @@ function createTrackOptions(jsonData, panel) {
     if (!jsonData) { //If there are no tracks, say so in the dropdown menu
         $('.track_dropdown').append($("<option></option>").text("No Tracks in this Album"));
         $('.track_dropdown').attr('disabled', 'disabled');
-        
+
         //Disable different elements when in different panels.
         if (panel == "edit") {
             $('#new_track').attr('disabled', 'disabled');
@@ -446,8 +450,8 @@ function checkCollaboratorRequests(username) {
                 counter+=1; //Increment badge counter
             }
         }
-        
-        
+
+
         if (counter == 0) { //Show blank badge when no notifications
             chrome.browserAction.setBadgeText({text:""});
         } else { //Set the extension badge if there are notifications

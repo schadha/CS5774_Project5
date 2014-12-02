@@ -2,62 +2,16 @@
 <html>
     <head>
         <title>CollabTunes</title>
-        <style>
-            body {
-                min-width: 450px;
-                overflow-x: hidden;
-            }
-
-            #loggedInUsername {
-                font-weight: bold;    
-            }
-
-            label {
-                display: block;   
-            }
-
-            textarea {
-                display: block;
-                width: 100%;
-                height: 60px;
-            }
-
-            .error {
-                font-weight: bold;
-                color: red;
-            }
-
-            .accept_request deny_request {
-                display: none;
-            }
-
-            #collabPanel {
-                display: none;
-            }
-
-            div.panel {
-                display: none;
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-
-            #collabTag {
-                margin-bottom: 0px;
-            }
-
-            .btn {
-                margin-right: 10px;
-            }
-
-        </style>
+        <link href="extensionStyles.css" type="text/css"  rel="stylesheet">
         <script src="jquery/jquery-1.11.1.min.js"></script>
         <script src="jquery/jquery-ui.min.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="popup.js"></script>
         <link href="bootstrap/css/bootstrap.min.css" type="text/css"  rel="stylesheet">
     </head>
-    <body>
 
+    <body>
+        <!--Navigation tab panel-->
         <ul id="navPanel" class="nav nav-tabs">
             <li id="tab_1" role="presentation" class="tab"><a href="#">Home</a></li>
             <li id="tab_2" role="presentation" class="tab"><a href="#">Create Album</a></li>
@@ -74,6 +28,7 @@
             <li id="logoutTab" role="presentation"><a href="#">Logout</a></li>
         </ul>
 
+        <!--Login panel-->
         <div id="loginPanel" class="panel">
 
             <h1>CollabTunes - Log in</h1>
@@ -95,6 +50,7 @@
             </form>
         </div>
 
+        <!--Main Panel-->
         <div id="panel_1" class="panel">
 
             <h1>CollabTunes</h1>
@@ -110,6 +66,7 @@
             <button id="btnDownload" class="download btn btn-success" disabled=true>Download</button>
         </div>
 
+        <!--New Album Panel-->
         <div id="panel_2" class="panel">
 
             <h1>Create New Album</h1>
@@ -138,6 +95,7 @@
 
         </div>
 
+        <!--New Track Panel-->
         <div id="panel_3" class="panel">
             <h1>Upload New Track</h1>
 
@@ -164,6 +122,7 @@
             </form>
         </div>
 
+        <!--Edit Track Panel-->
         <div id="panel_4" class="panel">
             <h1>Edit Track</h1>
             <form name="albumForm">
@@ -186,6 +145,7 @@
 
         </div>
 
+        <!--Delete Track Panel-->
         <div id="panel_5" class="panel">
             <h1>Delete Track</h1>
             <form name="albumForm">
@@ -204,6 +164,7 @@
 
         </div>
 
+        <!--Display Error Messages-->
         <p class="error" id="errorMessage"></p>
 
     </body>
