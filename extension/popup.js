@@ -1,8 +1,9 @@
+//Project URL
 var URL = 'http://localhost/CS5774/Project5/';
 
 $(document).ready(function() {
 
-    // make the initial request for an API key
+    // make the initial request for a username
     chrome.extension.sendRequest({
         'action': 'getUsername' 
     });
@@ -17,13 +18,13 @@ $(document).ready(function() {
     // event listener for current tab URL
     chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
         if (request.url != null) {
+            //Check if the url is of a YouTube video
             if (request.url.indexOf("youtube.com/watch") > -1 && request.url.indexOf("youtubeinmp3") == -1) {
-                $('#btnDownload').val(request.url);
-                $('#btnDownload').prop('disabled', false);
+                $('#btnDownload').val(request.url); //set the value of the button to the video URL
+                $('#btnDownload').prop('disabled', false); //Enable the button
             }
         } else if (request.username) {
-            initializePage(request.username);
-            checkCollaboratorRequests(request.username);
+            initializePage(request.username); //Initialize the main page after logging in or opening the extension
         }
     });
 
@@ -51,63 +52,104 @@ $(document).ready(function() {
         });
     });
 
-    $('#homeTab a').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-        $("#homePanel").show();
-        $("#commentPanel").hide();
-        $("#editTrackPanel").hide();
-        $("#uploadTrackPanel").hide();
-        $("#deleteTrackPanel").hide();
+    //
+    var lastTab = 0;
+    $(".tab").click(function() {
+        var num = this.id.match(/\d+/)[0];
+
+        if (lastTab != num) {
+            lastTab = num;
+            setErrorMessage('');
+        }
+
+        $("#tab_" + num).tab('show');
+        $(".panel").hide();
+        $("#panel_" + num).show();
+
+        if (num == 4) {
+            getTracks("edit");
+        } else if (num == 5) {
+            getTracks("delete");
+        }
+
     });
 
-    $('#albumTab a').click(function (e) {
+    $('#logoutTab a').click(function (e) {
         e.preventDefault();
-        $(this).tab('show');
-        $("#homePanel").hide();
-        $("#commentPanel").show();
-        $("#editTrackPanel").hide();
-        $("#uploadTrackPanel").hide();
-        $("#deleteTrackPanel").hide();
+
+        // reset everything
+        $('#loggedInUsername').text('');
+        chrome.extension.sendRequest({
+            'action': 'setUsername',
+            'username': ''
+        }); 
+
+        resetLoginPanel();
+
+        for (var i = 1; i <= 5; i++) {
+            $('#panel_'+i).hide();
+        }
+
+        $('#navPanel').hide();
+        chrome.browserAction.setBadgeText({text:""});
+        $('#loginPanel').show();
+
     });
 
-    $('#editTrack a').click(function (e) {
+    //Creates a new album for the user
+    $("#createalbum").click(function(e) {
         e.preventDefault();
-        $(this).tab('show');
-        $("#homePanel").hide();
-        $("#commentPanel").hide();
-        $("#editTrackPanel").show();
-        $("#uploadTrackPanel").hide();
-        $("#deleteTrackPanel").hide();
-        getTracks("edit");
-    });
-
-    $('#uploadTrack a').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-        $("#homePanel").hide();
-        $("#commentPanel").hide();
-        $("#editTrackPanel").hide();
-        $("#uploadTrackPanel").show();
-        $("#deleteTrackPanel").hide();
-    });
+        var albumName = $("#album_name").val();
+        var albumGenre = $("#album_genre").val();
+        var albumSummary = $("#album_summary").val();
+        var albumImage = $("#album_image").val();
+        var username = $('#loggedInUsername').text();
 
 
-    $('#deleteTrack a').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-        $("#homePanel").hide();
-        $("#commentPanel").hide();
-        $("#editTrackPanel").hide();
-        $("#uploadTrackPanel").hide();
-        $("#deleteTrackPanel").show();
-        getTracks("delete");
+        if (albumName.length == 0 || albumGenre.length == 0 || albumSummary.length == 0 || albumImage.length == 0) {
+            setErrorMessage("Please enter information for all the fields!");
+            return;
+        }
+
+        $("#albumForm").submit(function(e) {
+            var formObj = $(this);
+            var formData = new FormData(this);
+            formData.append("username", username);
+
+            $.ajax({
+                url: URL + "extensionCreateAlbum",
+                type: 'POST',
+                data:  formData,
+                mimeType:"multipart/form-data",
+                contentType: false,
+                cache: false,
+                processData:false,
+                success: function(data, textStatus, jqXHR)
+                {
+                    console.log(data);
+                    var data = JSON.parse(data);
+                    if (data.Error) {
+                        setErrorMessage(data.Error);
+                    } else {
+                        $('#errorMessage').css('color', 'green');
+                        setErrorMessage("Album Created Successfully");
+                        getAlbums(username);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) 
+                {
+                    setErrorMessage(jqXHR);
+                }          
+            });
+            e.preventDefault(); 
+        });
+        $("#albumForm").submit();
     });
 
     //Creates a new track for that album
     $("#createtrack").click(function(e) {
         e.preventDefault();
-        var track_album = $('#track_album2 option:selected').text();
+        var track_album = $('#track_album1 option:selected').text();
         var track_path = $("#track_data").val();
 
         if (track_name.length == 0 || !track_path) {
@@ -152,13 +194,13 @@ $(document).ready(function() {
     $('#track_edit_submit').click(function (e) {
         e.preventDefault();
 
-        var trackAlbum = $('#track_album3 option:selected').text();
+        var trackAlbum = $('#track_album2 option:selected').text();
         var albumOwner = $('#loggedInUsername').text();
         var trackName = $("#new_track").val();
         var oldTrackName = $('#track_name_select1 option:selected').text();
 
         if ($("#new_track").val().length == 0) {
-            $("#trackEditError").text("Please enter a valid new track name!");
+            setErrorMessage("Please enter a valid new track name!");
             return;
         }
 
@@ -172,12 +214,12 @@ $(document).ready(function() {
             var data = JSON.parse(data);
 
             if (data.Error) {
-                $("#trackEditError").text(data.Error);
+                setErrorMessage(data.Error);
             } else {
                 $('#errorMessage').css('color', 'green');
                 setErrorMessage("Edited Successfully");
                 $('#new_track').val('');
-                $('#editTrack a').click();
+                $('#tab_4 a').click();
             }
         });		
     });
@@ -185,7 +227,7 @@ $(document).ready(function() {
     $('#track_delete_submit').click(function (e) {
         e.preventDefault();
 
-        var trackAlbum = $('#track_album4 option:selected').text();
+        var trackAlbum = $('#track_album3 option:selected').text();
         var albumOwner = $('#loggedInUsername').text();
         var trackName = $("#track_name_select2 option:selected").text();
 
@@ -198,43 +240,22 @@ $(document).ready(function() {
             var data = JSON.parse(data);
 
             if (data.Error) {
-                $("#trackDeleteError").text(data.Error);
+                setErrorMessage(data.Error);
             }
             else {
                 $('#errorMessage').css('color', 'green');
                 setErrorMessage("Deleted Successfully");
-                $('#deleteTrack a').click();
+                $('#tab_5 a').click();
             }
         });
     });
 
-    $('#track_album3').on('change', function() {
+    $('#track_album2').on('change', function() {
         getTracks("edit");
     });
 
-    $('#track_album4').on('change', function() {
+    $('#track_album3').on('change', function() {
         getTracks("delete");
-    });
-
-    $('#logoutTab a').click(function (e) {
-        e.preventDefault();
-
-        // reset everything
-        $('#loggedInUsername').text('');
-        chrome.extension.sendRequest({
-            'action': 'setUsername',
-            'username': ''
-        }); 
-        resetCommentPanel();
-        resetLoginPanel();
-        $('#homePanel').hide();
-        $('#commentPanel').hide();
-        $('#uploadTrackPanel').hide();
-        $("#editTrackPanel").hide();
-        $('#navPanel').hide();
-        chrome.browserAction.setBadgeText({text:""});
-        $('#loginPanel').show();
-
     });
 
     //Press enter to login
@@ -273,36 +294,8 @@ $(document).ready(function() {
                 });
 
                 initializePage(username);
-                checkCollaboratorRequests(username);
             }
         });
-    });
-
-    // event handler for comment button 
-    $('#btnComment').click(function(e) {
-        e.preventDefault(); // don't submit form
-        setErrorMessage(''); // clear any error messages
-
-        var msg = $('#txtMessage').val();
-        var username = $('#loggedInUsername').text();
-        var albumname = $('#track_album1 option:selected').text();
-
-        $.post(
-            URL + 'extensionComment',
-            { 	
-                "album_owner": username,
-                "album_name": albumname,
-                "comment": msg
-            },
-            function(data) {
-                if (data) {
-                    setErrorMessage("Not Posted");
-                } else {
-                    $('#errorMessage').css('color', 'green');
-                    setErrorMessage("Posted Successfully");
-                    resetCommentPanel();
-                }
-            });
     });
 
     $('#btnDownload').click(function(e) {
@@ -328,27 +321,41 @@ function initializePage(username) {
     resetLoginPanel(); // reset the login panel
     $('#loginPanel').hide(); // hide the login panel
 
+    checkCollaboratorRequests(username);
+
     $('#loggedInUsername').text(username); // show username
 
     $("#homePanel").show();
     $('#navPanel').show();
-    $('#homeTab a').click();
+    $('#tab_1 a').click();
 
     $('#album_owner').val(username);
 
     requestCurrentTabURL();
 
+    getAlbums(username);
+}
+
+
+// ask the background script for the current tab URL
+function requestCurrentTabURL() {
+    chrome.extension.sendRequest({
+        'action': 'getURL' 
+    });   
+}
+
+function getAlbums(username) {
     $.post(URL + "extensionGetAlbums", {"album_owner": username}, function (data) {
         var jsonData = JSON.parse(data);
-        createOptions(jsonData);
+        createAlbumOptions(jsonData);
     });
 }
 
-function createOptions( jsonData ) {
-    for (var i = 1; i <= 4; i++) {
+function createAlbumOptions( jsonData ) {
+    for (var i = 1; i <= 3; i++) {
         $('#track_album'+ i +' option').remove(); // first remove all options
 
-        for (var fieldIndex in jsonData) { // then populatem them
+        for (var fieldIndex in jsonData) { // then populate them
             $('#track_album' + i).append($("<option></option>").attr("value", fieldIndex).text(jsonData[fieldIndex].album_name));
         }
     }
@@ -358,9 +365,9 @@ function getTracks(panel) {
     var album_name = "";
 
     if (panel == "edit") {
-        album_name = $('#track_album3 option:selected').text();   
+        album_name = $('#track_album2 option:selected').text();   
     } else {
-        album_name = $('#track_album4 option:selected').text();   
+        album_name = $('#track_album3 option:selected').text();   
     }
 
     var album_owner = $('#loggedInUsername').text();
@@ -403,14 +410,8 @@ function createTrackOptions(jsonData, panel) {
     }
 }
 
-// ask the background script for the current tab URL
-function requestCurrentTabURL() {
-    chrome.extension.sendRequest({
-        'action': 'getURL' 
-    });   
-}
-
 function checkCollaboratorRequests(username) {
+    $('#collabPanel').hide();
     $('#collabs').empty();
 
     var counter = 0;
@@ -447,10 +448,7 @@ function resetLoginPanel() {
     setErrorMessage(''); // clear any error messages
     $('#username').val('');
     $('#password').val('');
-}
-
-function resetCommentPanel() {
-    $('#txtMessage').val('');
+    $('.form-control').val('');
 }
 
 function setErrorMessage(msg) {

@@ -59,16 +59,16 @@
     <body>
 
         <ul id="navPanel" class="nav nav-tabs">
-            <li id="homeTab" role="presentation" class="active"><a href="#">Home</a></li>
-            <li id="albumTab" role="presentation"><a href="#">Create Album</a></li>
+            <li id="tab_1" role="presentation" class="tab"><a href="#">Home</a></li>
+            <li id="tab_2" role="presentation" class="tab"><a href="#">Create Album</a></li>
             <li id="tracksTab" role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
                     Tracks <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li id="uploadTrack" role="presentation"><a href="#">Upload Track</a></li>
-                    <li id="editTrack" role="presentation"><a href="#">Edit Track</a></li>
-                    <li id="deleteTrack" role="presentation"><a href="#">Delete Track</a></li>
+                    <li id="tab_3" role="presentation" class="tab"><a href="#">Upload Track</a></li>
+                    <li id="tab_4" role="presentation" class="tab"><a href="#">Edit Track</a></li>
+                    <li id="tab_5" role="presentation" class="tab"><a href="#">Delete Track</a></li>
                 </ul>
             </li>
             <li id="logoutTab" role="presentation"><a href="#">Logout</a></li>
@@ -95,7 +95,7 @@
             </form>
         </div>
 
-        <div id="homePanel" class="panel">
+        <div id="panel_1" class="panel">
 
             <h1>CollabTunes</h1>
 
@@ -110,30 +110,45 @@
             <button id="btnDownload" class="download btn btn-success" disabled=true>Download</button>
         </div>
 
-        <div id="commentPanel" class="panel">
+        <div id="panel_2" class="panel">
 
-            <h1>Comment</h1>
+            <h1>Create New Album</h1>
 
-            <p>Select an album to comment on.</p>
-            <select class="form-control" id="track_album1" name="track_album"></select><br/>
-            <form>
-                <textarea id="txtMessage" name="message"></textarea><br/>
-                <button id="btnComment" class="btn btn-success">Comment</button>
+            <form name="albumForm" id="albumForm">
+                <div class="form-group">
+                    <label for="album_name">Album Name</label>
+                    <input type="text" class="form-control" id="album_name" name="album_name" placeholder="Enter Album Name">
+                </div>
+                <div class="form-group">
+                    <label for="album_image">Album Image</label>
+                    <input type="file" class="form-control" id="album_image" name="album_image" placeholder="Enter Album Image">
+                </div>
+                <div class="form-group">
+                    <label for="album_genre">Album Genre</label>
+                    <input type="text" class="form-control" id="album_genre" name="album_genre" placeholder="Enter Album Genre">
+                </div>
+                <div class="form-group">
+                    <label for="album_summary">Album Summary</label>
+                    <textarea class="form-control" id="album_summary" name="album_summary" placeholder="Enter Summary"></textarea>
+                </div>
+                <div class="form-group formButtons">
+                    <button type="button" class="btn btn-success" name="createalbum" id="createalbum">Create Album</button>
+                </div>
             </form>
+
         </div>
 
-        <div id="uploadTrackPanel" class="panel">
+        <div id="panel_3" class="panel">
             <h1>Upload New Track</h1>
 
             <form name="trackForm" id="trackForm" enctype="multipart/form-data" method="POST" action="../track/create">
                 <div class="form-group">
-                    <p class="error" id="trackCreateError"></p>
                     <label for="track_name">Track Name</label>
                     <input type="text" class="form-control" id="track_name" name="track_name">
                 </div>
                 <div class="form-group">
                     <label for="track_album">Album Name</label>
-                    <select class="form-control" id="track_album2" name="track_album"></select>
+                    <select class="form-control" id="track_album1" name="track_album"></select>
                 </div>
                 <div class="form-group">
                     <label for="album_owner">Album Owner</label>
@@ -149,13 +164,12 @@
             </form>
         </div>
 
-        <div id="editTrackPanel" class="panel">
+        <div id="panel_4" class="panel">
             <h1>Edit Track</h1>
             <form name="albumForm">
                 <div class="form-group">
-                    <p class="error" id="trackEditError"></p>
                     <label for="old_track">Select Album</label>
-                    <select class="form-control" id="track_album3" name="track_album"></select>
+                    <select class="form-control" id="track_album2" name="track_album"></select>
                 </div>
                 <div class="form-group">
                     <label for="old_track">Select Track</label>
@@ -172,13 +186,12 @@
 
         </div>
 
-        <div id="deleteTrackPanel" class="panel">
+        <div id="panel_5" class="panel">
             <h1>Delete Track</h1>
             <form name="albumForm">
                 <div class="form-group">
-                    <p class="error" id="trackDeleteError"></p>
                     <label for="old_track">Select Album</label>
-                    <select class="form-control" id="track_album4" name="track_album"></select>
+                    <select class="form-control" id="track_album3" name="track_album"></select>
                 </div>
                 <div class="form-group">
                     <label for="old_track">Select Track</label>
@@ -190,7 +203,7 @@
             </form>
 
         </div>
-        
+
         <p class="error" id="errorMessage"></p>
 
     </body>
