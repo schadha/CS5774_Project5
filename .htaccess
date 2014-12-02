@@ -23,6 +23,7 @@ RewriteRule ^demote$ controller/UserController.php?method=demote
 
 RewriteRule ^extensionProcessLogin/?$ controller/ExtensionController.php?method=login
 RewriteRule ^extensionGetAlbums/?$ controller/ExtensionController.php?method=getAlbums
+RewriteRule ^extensionCreateAlbum/?$ controller/ExtensionController.php?method=createAlbum
 RewriteRule ^extensionGetCollaborators/?$ controller/ExtensionController.php?method=getCollabs
 RewriteRule ^extensionCollaborate$ controller/ExtensionController.php?method=collaborate
 RewriteRule ^extensionUncollaborate$ controller/ExtensionController.php?method=uncollaborate
