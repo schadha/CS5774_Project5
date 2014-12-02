@@ -259,7 +259,7 @@ class User {
 	//Gets twitter names of collaborators
 	public function getTwitterNamesForCollabs() {
 		$twitterNames = array();
-		$query = sprintf("select twitter from user where username in (select distinct c.friend_two from user as u, collaborators as c where u.username='%s' and u.username=c.friend_one)",
+		$query = sprintf("select username, twitter from user where username in (select distinct c.friend_two from user as u, collaborators as c where u.username='%s' and u.username=c.friend_one)",
 			$this->username
 		);
 
@@ -269,9 +269,12 @@ class User {
 		if ($result) {
 			$rows = mysql_num_rows($result);
 			for ($i = 0; $i < $rows; $i++) {
-				array_push($twitterNames, mysql_fetch_assoc($result)['twitter']);
+				$user = mysql_fetch_assoc($result);
+				array_push($twitterNames, $user['username'] . ':' . $user['twitter']);
 			}
 		}
 		return json_encode($twitterNames);
 	}
+
+
 }

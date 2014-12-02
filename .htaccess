@@ -10,7 +10,7 @@ RewriteRule ^updateUser$ controller/UserController.php?method=update
 RewriteRule ^processLogin/?$ controller/UserController.php?method=login
 RewriteRule ^processRegistration/?$ controller/UserController.php?method=register
 RewriteRule ^logoff/?$ controller/UserController.php?method=logoff
-RewriteRule ^twitterfeed/?$ controller/twitterFeed.php
+RewriteRule ^twitterfeed/?$ controller/TwitterFeedController.php
 
 RewriteRule ^comment/delete$ controller/CommentController.php?method=delete
 RewriteRule ^comment$ controller/CommentController.php?method=add

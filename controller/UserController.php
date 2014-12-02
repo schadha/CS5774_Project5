@@ -249,9 +249,41 @@ function collabs() {
     // Get all the collaborators for the specified user.
     $collabs = Collaborator::getCollaborators($_SESSION['username'], 2);
 
+    if(isset($_SESSION['username'])) {
+        $tweets = twitterData();
+    }
+
+
     require_once '../views/header.html';
 
     require_once '../views/collabs.html';
+}
+
+function twitterData() {
+    $twitterNames = array();
+    $tweets = array();
+
+    if ($curUser = User::publicUserInfo("username", $_SESSION['username'])) {
+        $collabUser = new User($curUser);
+        $twitterNames = json_decode($collabUser->getTwitterNamesForCollabs());
+    }
+
+    if (sizeof($twitterNames) > 0) {
+        require_once './twitteroauth.php';
+        $connection = new TwitterOAuth("mJY9r8kDCUtMJUNiGwfZ2gLxK", "oLzWiKDik54rc1rPYgY2eBmxc0l15U3H6JK0xkBxIlIxp8QTiY", "911592974-xPcUDBEkeBV79vAhTYeVCXXAwnOQSjZhN2ayvwKs", "HGcHF1HyGLZLPJR3gmjMS70jGitmh5UPpdJ3VqCq0cXVN");
+
+        for ($i = 0; $i < sizeof($twitterNames); $i++) {
+            if ($twitterNames[$i] != null && strlen($twitterNames[$i]) > 0) {
+                $twitter = explode(":", $twitterNames[$i])[1];
+                $username = explode(":", $twitterNames[$i])[0];
+                $content = $connection->get('https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=' . $twitter . '&count=3');
+                for ($i = 0; $i < sizeof($content); $i++) {
+                    array_push($tweets, $username . ': ' . $content[$i]->text . ' ' . $content[$i]->created_at);
+                }
+            }
+        }
+    }
+    return $tweets;
 }
 
 function home() {
@@ -334,27 +366,7 @@ function community() {
     require_once '../views/header.html';
 
     if(isset($_SESSION['username'])) {
-
-        $twitterNames = array();
-        $tweets = array();
-
-        if ($curUser = User::publicUserInfo("username", $_SESSION['username'])) {
-            $collabUser = new User($curUser);
-            $twitterNames = json_decode($collabUser->getTwitterNamesForCollabs());
-        }
-
-        if (sizeof($twitterNames) > 0) {
-            require_once './twitteroauth.php';
-            $connection = new TwitterOAuth("mJY9r8kDCUtMJUNiGwfZ2gLxK", "oLzWiKDik54rc1rPYgY2eBmxc0l15U3H6JK0xkBxIlIxp8QTiY", "911592974-xPcUDBEkeBV79vAhTYeVCXXAwnOQSjZhN2ayvwKs", "HGcHF1HyGLZLPJR3gmjMS70jGitmh5UPpdJ3VqCq0cXVN");
-
-            for ($i = 0; $i < sizeof($twitterNames); $i++) {
-                if ($twitterNames[$i] != null && strlen($twitterNames[$i]) > 0) {
-                    $content = $connection->get('https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=' . $twitterNames[$i] . '&count=1');
-                    array_push($tweets, $content[0]->text . ' ' . $content[0]->created_at);
-                }
-            }
-        }
-
+        $tweets = twitterData();
         require_once '../views/featured_logged_in.html';
     } else {
         require_once '../views/featured.html';

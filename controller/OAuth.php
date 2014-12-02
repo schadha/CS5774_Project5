@@ -1,12 +1,7 @@
 <?php
-// vim: foldmethod=marker
-/* Generic exception class
+/*
+ * Library is necessary to establish OAuth
  */
-// if (!class_exists('OAuthException')) {
-//   class OAuthException extends Exception {
-//     // pass
-//   }
-// }
 class OAuthConsumer {
   public $key;
   public $secret;
