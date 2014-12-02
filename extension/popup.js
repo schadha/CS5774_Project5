@@ -1,5 +1,5 @@
 //Project URL
-var URL = 'http://localhost/CS5774/Project5/';
+var URL = 'http://ec2-54-173-61-131.compute-1.amazonaws.com/CS5774/CollabTunes/';
 
 $(document).ready(function() {
 
