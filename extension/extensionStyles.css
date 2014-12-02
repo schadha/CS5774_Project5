@@ -1,0 +1,39 @@
+body {
+    min-width: 450px;
+    overflow-x: hidden;
+}
+
+#loggedInUsername {
+    font-weight: bold;    
+}
+
+label {
+    display: block;   
+}
+
+.error {
+    font-weight: bold;
+    color: red;
+}
+
+.accept_request deny_request {
+    display: none;
+}
+
+#collabPanel {
+    display: none;
+}
+
+div.panel {
+    display: none;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#collabTag {
+    margin-bottom: 0px;
+}
+
+.btn {
+    margin-right: 10px;
+}
