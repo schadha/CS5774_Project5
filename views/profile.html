@@ -43,7 +43,7 @@
             <?php } ?>
         </ul>
         <?php if (sizeof($tweets) > 0) { ?>
-          <h3>Twitter Feed</h3>
+          <h3>Twitter Feed - <?=$user ?></h3>
           <ul class="tweets">
             <?php foreach($tweets as $tweet) { ?>
               <div class="event">
@@ -210,18 +210,22 @@
     </html>
     <!-- In place to keep refreshing tweets, in the html so it is local -->
     <script>
-      setInterval(function() {
-          $.post("./twitterfeed", function (data) {
-              data = JSON.parse(data);
-              var html = "";
-              for (var i = 0; i < data.length; i++) {
-                html += '<div class="event">' + data[i] + '</div>';
-              }
-              if (html.length > 0) {
-                $(".tweets").html(html);
-              }
-          });
+      // setInterval(function() {
+      //     var user = window.location.href.split("/");
+      //     var profile = user[user.length - 1];
+      //     $.post("./twitterfeed", {
+      //       "profile": profile
+      //     }, function (data) {
+      //         data = JSON.parse(data);
+      //         var html = "";
+      //         for (var i = 0; i < data.length; i++) {
+      //           html += '<div class="event">' + data[i] + '</div>';
+      //         }
+      //         if (html.length > 0) {
+      //           $(".tweets").html(html);
+      //         }
+      //     });
 
-        }, 10000);
+      //   }, 10000);
 
     </script>

@@ -23,19 +23,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['community'])) {
                     $twitter = explode(":", $twitterNames[$i])[1];
                     $username = explode(":", $twitterNames[$i])[0];
                     $content = $connection->get('https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=' . $twitter . '&count=3');
-                    for ($i = 0; $i < sizeof($content); $i++) {
-                        array_push($tweets, $username . ': ' . $content[$i]->text . ' ' . $content[$i]->created_at);
-                    }
+                    for ($j = 0; $j < sizeof($content); $j++) {
+                    array_push($tweets, $username . ': ' . $content[$j]->text . ' ' . $content[$j]->created_at);
+
+                }
                 }
             }
         }
 
 	echo json_encode($tweets);
-}  else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+}  else if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['profile'])) {
 	$twitterName = "";
 	$tweets = array();
 
-	if ($curUser = User::publicUserInfo("username", $_SESSION['username'])) {
+	if ($curUser = User::publicUserInfo("username", $_POST['profile'])) {
         $twitterName = $curUser['twitter'];
     }
 

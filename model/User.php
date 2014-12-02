@@ -259,7 +259,7 @@ class User {
 	//Gets twitter names of collaborators
 	public function getTwitterNamesForCollabs() {
 		$twitterNames = array();
-		$query = sprintf("select username, twitter from user where username in (select distinct c.friend_two from user as u, collaborators as c where u.username='%s' and u.username=c.friend_one)",
+		$query = sprintf("select username, twitter from user where username in (select distinct c.friend_two from user as u, collaborators as c where u.username='%s' and c.status = 1 and u.username=c.friend_one)",
 			$this->username
 		);
 
