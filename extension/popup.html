@@ -44,7 +44,7 @@
             #collabTag {
                 margin-bottom: 0px;
             }
-            
+
             .btn {
                 margin-right: 10px;
             }
@@ -60,8 +60,17 @@
 
         <ul id="navPanel" class="nav nav-tabs">
             <li id="homeTab" role="presentation" class="active"><a href="#">Home</a></li>
-            <li id="commentTab" role="presentation"><a href="#">Comment</a></li>
-            <li id="uploadTab" role="presentation"><a href="#">Track Upload</a></li>
+            <li id="albumTab" role="presentation"><a href="#">Create Album</a></li>
+            <li id="tracksTab" role="presentation" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                    Tracks <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li id="uploadTrack" role="presentation"><a href="#">Upload Track</a></li>
+                    <li id="editTrack" role="presentation"><a href="#">Edit Track</a></li>
+                    <li id="deleteTrack" role="presentation"><a href="#">Delete Track</a></li>
+                </ul>
+            </li>
             <li id="logoutTab" role="presentation"><a href="#">Logout</a></li>
         </ul>
 
@@ -113,7 +122,7 @@
             </form>
         </div>
 
-        <div id="uploadPanel" class="panel">
+        <div id="uploadTrackPanel" class="panel">
             <h1>Upload New Track</h1>
 
             <form name="trackForm" id="trackForm" enctype="multipart/form-data" method="POST" action="../track/create">
@@ -140,6 +149,48 @@
             </form>
         </div>
 
+        <div id="editTrackPanel" class="panel">
+            <h1>Edit Track</h1>
+            <form name="albumForm">
+                <div class="form-group">
+                    <p class="error" id="trackEditError"></p>
+                    <label for="old_track">Select Album</label>
+                    <select class="form-control" id="track_album3" name="track_album"></select>
+                </div>
+                <div class="form-group">
+                    <label for="old_track">Select Track</label>
+                    <select class="form-control" id="track_name_select1" name="track_name_select"></select>
+                </div>
+                <div class="form-group">
+                    <label for="new_track">New Track Name</label>
+                    <input type="text" class="form-control" id="new_track" name="new_track">
+                </div>
+                <div class="form-group formButtons">
+                    <button type="button" class="btn btn-success" name="track_edit_submit" id="track_edit_submit">Edit Track</button>
+                </div>
+            </form>
+
+        </div>
+
+        <div id="deleteTrackPanel" class="panel">
+            <h1>Delete Track</h1>
+            <form name="albumForm">
+                <div class="form-group">
+                    <p class="error" id="trackDeleteError"></p>
+                    <label for="old_track">Select Album</label>
+                    <select class="form-control" id="track_album4" name="track_album"></select>
+                </div>
+                <div class="form-group">
+                    <label for="old_track">Select Track</label>
+                    <select class="form-control" id="track_name_select2" name="track_name_select"></select>
+                </div>
+                <div class="form-group formButtons">
+                    <button type="button" class="btn btn-danger" name="track_delete_submit" id="track_delete_submit">Delete Track</button>
+                </div>
+            </form>
+
+        </div>
+        
         <p class="error" id="errorMessage"></p>
 
     </body>
