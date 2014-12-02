@@ -64,16 +64,13 @@ function userDelete() {
         unlink($artwork_path);
     }
 
-    //Deletes the user from the database
+    echo $admin;
+    // //Deletes the user from the database
     $curUser = User::deleteUser("username", $delete);
 
     //Logs off user on success
-    if ($curUser == null) {
-        $_SESSION['error'] = "Error in deleteing user!";
-    } else {
-        if ($admin == 0) {
-            require_once './user_logoff.php';
-        }
+    if ($admin == 0) {
+        userLogoff();
     }
 }
 

@@ -114,7 +114,8 @@ $(document).ready(function() {
 			'admin': 0
 		},
 		function (data) {
-			window.location.href = "./";
+			console.log(data);
+			window.location.href = "./featured";
 		});
 	});
 
@@ -128,7 +129,7 @@ $(document).ready(function() {
 		},
 		function (data) {
 			if (data) {
-				window.location.href = "./featured";
+				window.location.href = "./community";
 			}
 		});
 	});
